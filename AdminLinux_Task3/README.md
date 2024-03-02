@@ -1,4 +1,4 @@
-# Task02
+# Day3_Task01
 
 ## Description
     .The bash script checks if the .bashrc file exists in the user's home directory.
