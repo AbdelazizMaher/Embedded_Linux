@@ -1,0 +1,26 @@
+#!/bin/bash
+
+username=abdo
+groupname=maher
+
+if id ${username} &> /dev/null; 
+then
+	echo "UserName exist"
+       	exit 1
+fi
+
+if cut -d : -f1 /etc/group | grep -q  ${groupname};
+then
+	echo "GroupName exist" 
+else
+	sudo groupadd ${groupname};
+	echo "Group Added"
+fi
+
+sudo adduser ${username}
+sudo usermod -aG ${groupname} ${username}
+
+echo "=================UserName INFO==================="
+cat /etc/passwd | grep ${username}
+echo "================GroupName INFO==================="
+cat /etc/group | grep ${groupname} 
