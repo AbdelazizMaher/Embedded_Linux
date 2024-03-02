@@ -3,7 +3,7 @@
 ## Description
 	- This script checks if the user and group already exist before creating them and provides relevant information for both after creating them.
 
-#Questions	
+# Questions	
 1- Create a supplementary (Secondary) group called pgroup with group ID of 30000:
 	- sudo groupadd -g 30000 pgroup
 	- cat /etc/group | grep pgroupor directories, the "x" permission allows users to access and navigate through the directory
