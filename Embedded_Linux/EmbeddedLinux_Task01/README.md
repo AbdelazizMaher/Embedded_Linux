@@ -3,7 +3,7 @@
 This project demonstrates how to generate output by compiling and linking source files or by using a static library.
 
 ## Project Tree
-![Project Tree](Project_Tree.jpg)
+![](Project_Tree.png)
 
 
 ## Using Source Files:
