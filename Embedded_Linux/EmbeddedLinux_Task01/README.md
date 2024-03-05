@@ -3,25 +3,7 @@
 This project demonstrates how to generate output by compiling and linking source files or by using a static library.
 
 ## Project Tree
-.
-└── EmbeddedLinux_Task01
-    ├── App
-    │   └── main.c
-    ├── Inc
-    │   ├── addition.h
-    │   ├── division.h
-    │   ├── modulus.h
-    │   ├── multiplication.h
-    │   └── subtraction.h
-    ├── Lib
-    │   └── libCalc.a
-    └── Src
-        ├── addition.c
-        ├── division.c
-        ├── modulus.c
-        ├── multiplication.c
-        └── subtraction.c
-
+![Project Tree](./Project_Tree.jpg)
 
 
 ## Using Source Files:
