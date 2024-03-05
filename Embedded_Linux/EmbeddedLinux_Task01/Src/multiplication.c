@@ -1,7 +1,7 @@
 #include "../Inc/multiplication.h"
 
 
-double Add(double multiplicand ,double multiplier)
+double Multiply(double multiplicand ,double multiplier)
 {
 	return ( multiplicand * multiplier );
 }
