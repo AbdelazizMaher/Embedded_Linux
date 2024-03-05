@@ -1,4 +1,4 @@
-#include "../Src/addition.h"
+#include "../Inc/addition.h"
 
 
 double Add(double addend ,double augend)
