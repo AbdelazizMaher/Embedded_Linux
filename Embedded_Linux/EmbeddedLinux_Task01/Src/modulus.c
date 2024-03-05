@@ -3,5 +3,5 @@
 
 double Remainder(double dividend ,double divisor)
 {
-	return ( dividend % divisor );
+	return ( (long long)dividend % (long long)divisor );
 }
