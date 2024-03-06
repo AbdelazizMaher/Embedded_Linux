@@ -33,7 +33,7 @@ Follow these steps to configure CrossTool-NG:
 ### 2. Choose toolchain for required architecture:
     ./ct-ng [microcontroller]             ===>> To configure the microcontroller used    
 
-### 2. Initialize the CrossTool-NG configuration to change in the default configuration:
+### 3. Initialize the CrossTool-NG configuration to change in the default configuration:
     ./ct-ng menuconfig                    ===>> To configure toolchain
 
 ## Building the Toolchain
