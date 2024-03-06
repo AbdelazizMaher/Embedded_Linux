@@ -17,7 +17,7 @@ To install CrossTool-NG, follow these steps:
 ### 3. Install Dependencies:
     sudo apt install -y gcc g++ gperf bison flex texinfo help2man make libncurses5-dev python3-dev autoconf automake libtool-bin gawk wget bzip2 xz-utils unzip patch libstdc++6 rsync
     
-### 3. Configure and compile CrossTool-NG:
+### 4. Configure and compile CrossTool-NG:
     ./bootstrap                          ===>> To setup the environment
     ./configure --enable-local           ===>> To check all dependency
     make                                 ===>> To generate the Makefile for croostool-ng
