@@ -70,6 +70,18 @@ This project demonstrates how to generate output by compiling and linking source
 	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f67978a6000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007f6797adc000)
 
+ ## To use The Makefile:
+ 
+ ### 1. For compiling using source files:
+      make
+
+  ### 2. For compiling using static lib:
+      make BUILD_TYPE=static  
+      make clean
+
+  ### 2. For compiling using dynamic lib:
+      make BUILD_TYPE=dynamic  
+      make clean
     
      
 
