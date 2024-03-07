@@ -41,9 +41,10 @@ This project demonstrates how to generate output by compiling and linking source
 ### 2. Generate dynamic library from object files:
   **Note:** the generated .so file is an executable as it will be executed by the **system loader** at run-time.
   
-    gcc -shared *.o -o LibDynamic.so
+    gcc -shared *.o -o libDynamic.so
     
 ### 3. Link the dynamic library with the main file to generate the output:
+    cd ..
     gcc App/main.c -L./Lib -lDynamic -o Calc
 
 ### 4. System loader :
