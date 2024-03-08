@@ -1,41 +1,60 @@
 #@Copyright : Abdelaziz Maher
-CC=
-CFLAGS=
-INCS=
-SRC =$(wildcard Src/*.c)
-OBJ = $(patsubst Src/%.c, Lib/%.o, $(SRC))
 
-ifeq ($(BUILD_TYPE),static) 
-LIBS=Lib/LibStatic.a 
-Output_Name=CalStatic
-static: static_build
-else ifeq ($(BUILD_TYPE),dynamic)
-LIBS=Lib/libDynamic.so
-Output_Name=CalcDynamic
-dynamic: dynamic_build
-else
-default:
-	@$(CC)gcc App/main.c Src/* -o Calc	
-endif
+# Compiler
+CC = 
+
+# Compiler flags
+CFLAGS = 
+INCS = 
 
 
-dynamic_build: $(OBJ)
-	@$(CC)gcc -shared Lib/*.o -o $(LIBS)
-	@$(CC)gcc App/main.c -Wl,-rpath=./Lib -L./Lib -lDynamic -o $(Output_Name)  
+# Directories
+SRC_DIR = Src
+OBJ_DIR = Lib
+APP_DIR = App
+
+# Source files
+SRC = $(wildcard $(SRC_DIR)/*.c)
+
+# Object files
+OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+
+# Libraries
+STATIC_LIB = $(OBJ_DIR)/LibStatic.a
+DYNAMIC_LIB = $(OBJ_DIR)/libDynamic.so
+
+# Output Names
+STATIC_OUTPUT = CalcStatic
+DYNAMIC_OUTPUT = CalcDynamic
+DEFAULT_OUTPUT = Calc
+
+# Default build type
+BUILD_TYPE ?= default
+
+all: $(BUILD_TYPE)
+
+default:  
+	@$(CC)gcc $(APP_DIR)/main.c $(SRC_DIR)/*.c -o $(DEFAULT_OUTPUT)
 	
-static_build: $(OBJ)	
-	@$(CC)gcc App/main.c $(LIBS) -o $(Output_Name) 
+dynamic: $(OBJ)
+	@$(CC)gcc -shared $(OBJ_DIR)/*.o -o $(DYNAMIC_LIB)
+	@$(CC)gcc $(APP_DIR)/main.c -Wl,-rpath=./$(OBJ_DIR) -L./$(OBJ_DIR) -lDynamic -o $(DYNAMIC_OUTPUT)  
+	
+static: $(OBJ)	
+	@$(CC)gcc $(APP_DIR)/main.c $(STATIC_LIB) -o $(STATIC_OUTPUT)
 	
 Lib/%.o: Src/%.c
 ifeq ($(BUILD_TYPE),static) 
-	@$(CC)gcc -c $(INCS) $(CFLAGS) $(<) -o $(@)
-	@$(CC)ar rcs  Lib/LibStatic.a $(@)
+	@$(CC)gcc -c $(CFLAGS) $(INCS) $(<) -o $(@)
+	@$(CC)ar rcs $(STATIC_LIB) $(@)
 else ifeq ($(BUILD_TYPE),dynamic)
 	@$(CC)gcc -fPIC -c $(INCS) $(CFLAGS) $(<) -o $(@)	
 endif	
-	
-			
+				
 clean:
-	@rm Lib/*.o 
+	@rm -rf $(OBJ_DIR)/*.o 
+
+clean_all:
+	@rm -rf $(OBJ_DIR)/*.o $(STATIC_LIB) $(DYNAMIC_LIB) $(DEFAULT_OUTPUT) $(STATIC_OUTPUT) $(DYNAMIC_OUTPUT)
 
 
