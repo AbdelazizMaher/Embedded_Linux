@@ -7,7 +7,6 @@ CC =
 CFLAGS = 
 INCS = 
 
-
 # Directories
 SRC_DIR = Src
 OBJ_DIR = Lib

@@ -39,7 +39,7 @@ This project demonstrates how to generate output by compiling and linking source
     gcc ../Src/* -fPIC -c .
 
 ### 2. Generate dynamic library from object files:
-  **Note:** the generated .so file is an executable as it will be executed by the **system loader** at run-time.
+  **Note:** the generated .so file will be used by executables like the **system loader** at run-time.
   
     gcc -shared *.o -o libDynamic.so
     
