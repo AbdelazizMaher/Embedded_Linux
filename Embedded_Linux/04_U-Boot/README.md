@@ -1,58 +1,40 @@
-# Create Your Own Emulated SDcard
+# U-Boot (Das U-Boot)
 
-## Emulated SDcard 
-![](SDcard.png)
+**U-Boot,** short for Universal Bootloader, is an **open-source bootloader** widely used in embedded systems. It supports a wide range of architectures and platforms, making it a versatile choice for bootstrapping embedded Linux systems and other operating systems.
 
-## 1. In a new folder, create a new file
+## Building U-Boot
+
+## 1. Clone the U-Boot repository from the official Git repository and branch to a stable release:
 ```bash
-mkdir EmulatedSD
-touch sd.img
-cd EmulatedSD/
+https://github.com/u-boot/u-boot.git
+cd u-boot/
+git checkout v2022.07
+```
+## 2. Configure U-Boot for your target platform ( Vexpress Cortex A9 (Qemu) ):
+### 2.1. Grep the machine wanted by using U-Boot configs file( supported machines )
+```bash
+ls configs/ | grep vexpress
+```
+### 2.2. Default configured U-Boot for supproted architecture:
+```bash
+make vexpress_ca9x4_defconfig ARCH=arm CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleabihf/bin/arm-cortexa9_neon-linux-musleabihf-
+```
+**Notes**
+### Varibles used by the u-boot makefile
+```bash
+CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf-
+ARCH=arm
+```
+### 2.3. Modify default-configured U-Boot for supproted architecture:
+```bash
+make menuconfig ARCH=arm CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleabihf/bin/arm-cortexa9_neon-linux-musleabihf-
+```
+### 2.4. Build U-Boot:
+```bash
+make ARCH=arm CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleabihf/bin/arm-cortexa9_neon-linux-musleabihf- -j 6
 ```
 
-## 2. Create file size with 1 GB or (wanted size) filled with zeros
-```bash
-dd if=/dev/zero of=sd.img bs=1M count=1024
-```
 
-## 3. Add partition table and partition the file 
-```bash
-cfdisk sd.img
-```
-**Notes:** 
-
-  a) Choose partion table ==> DOS/MBR
-  
-  b) Create Two pwrtitions ==> boot (FAT 16) , rootfs (Linux/ext4)
-  
-  c) Make boot partition bootable
-
- ## 4. Attach the sdcard file to a virtual storage device( /dev/loop )
-```bash
- sudo losetup -f --show --partscan sd.img
-```
-**Notes:** 
-
-  a) `-f, --find :` Find  the first unused loop device.
-  
-  b) `--show:` Display the name of the assigned loop device
-  
-  c) `-P, --partscan:` Force the kernel to scan the partition table on a newly created loop device.
-
-## 5. Create folders(number of partitions) and then Add file-system data structure to the partitions
-```bash
-sudo mkfs.vfat -F 16 -n boot /dev/loop13p1
-sudo mkfs.ext4 -L rootfs /dev/loop13p2
-```
-## 6. Mount the file-system data structure to the partitions as every partition acts as a device
-```bash
-sudo mount /dev/loop13p1 BOOT/
-sudo mount /dev/loop13p2 ROOTFS/
-```
-## 7. list block devices
-```bash
-lsblk 
-```
 
 
 
