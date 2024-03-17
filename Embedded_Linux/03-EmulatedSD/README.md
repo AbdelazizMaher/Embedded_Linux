@@ -1,5 +1,8 @@
 # Create Your Own Emulated SDcard
 
+## Sdcard 
+![](Sdcard.png)
+
 ## 1. In a new folder, create a new file
 ```bash
 mkdir EmulatedSD
