@@ -33,7 +33,7 @@ make menuconfig ARCH=arm CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleab
 ```bash
 make ARCH=arm CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleabihf/bin/arm-cortexa9_neon-linux-musleabihf- -j 6
 ```
-## 2. Run Qemu:
+## 3. Run Qemu:
 ```bash
 qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img
 ```
