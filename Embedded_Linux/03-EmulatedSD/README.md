@@ -1,6 +1,6 @@
 # Create Your Own Emulated SDcard
 
-## Sdcard 
+## SDcard 
 ![](Sdcard.png)
 
 ## 1. In a new folder, create a new file
