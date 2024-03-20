@@ -27,7 +27,7 @@ To install CrossTool-NG, follow these steps:
 Follow these steps to configure CrossTool-NG:
 
 ### 1. List default configured Toolchains for supproted architecture:
-    /ct-ng list-samples                   ===>> To list all microcontrollers supported
+    ./ct-ng list-samples                  ===>> To list all microcontrollers supported
 
 
 ### 2. Choose toolchain for required architecture:
