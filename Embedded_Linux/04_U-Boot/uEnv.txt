@@ -1,0 +1,41 @@
+# Kernel load address in RAM
+kernel_addr_r=0x60100000
+
+# Device tree binary load address in RAM 
+fdt_addr_r=0x60000000
+
+# IP address of the local machine
+ipaddr=192.168.1.101
+
+# IP address of the TFTP server
+serverip=192.168.1.99
+
+# Command to load kernel image and device tree from FAT filesystem
+load_fromFAT=fatload mmc 0:1 $kernel_addr_r zImage;fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+
+# Command to load kernel image and device tree from TFTP server
+load_fromTFTP=tftp $kernel_addr_r zImage;tftp $fdt_addr_r vexpress-v2p-ca9.dtb
+
+# Command to check if SD card image is available, then load kernel from FAT filesystem
+check_then_loadFAT=if mmc dev;then run load_fromFAT;else echo SD_Image not found;fi
+
+# Command to load kernel image and device tree from FAT filesystem and then boot
+loadFAT_Image=run check_then_loadFAT;run loadIMAGE
+
+# Command to load kernel image and device tree from TFTP server and then boot
+loadIMAGE=bootz $kernel_addr_r - $fdt_addr_r;
+
+# Command to load kernel image and device tree from TFTP server and then boot
+loadTFTP_Image=run load_fromTFTP;run loadIMAGE
+
+# Command to boot the system
+bootcmd=run loadFAT_Image;echo "Boot from TFTP server";run loadTFTP_Image
+
+
+# The following lines to load 'uEnv.txt' from TFTP and import its environment variables
+
+#1. tftp <Ram memory address> uEnv.txt  		ex: 0x60505400
+
+#2. env import -t <Ram memory address> <uEnv.txt size>
+
+
