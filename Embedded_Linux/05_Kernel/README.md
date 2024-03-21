@@ -4,6 +4,7 @@
 
 # Linux Kernel for QEMU vexpress
 
+- you can clone the **main repo** or use a **repository specifically configured for running QEMU vexpress virtual machines** 
 
 ## Clone the Main Repository
 
@@ -24,18 +25,33 @@ git clone --depth=1 https://github.com/qemu/qemu.git
 ```
 
 ## Building the Kernel
+**Note:**This configuration must be checked
+
+- [x] Enable devtmpfs
+- [x] Change kernel compression to XZ
+- [x] Change your kernel local version to your name and append on it -v1.0
 
 **Once you have cloned the repository,** you can build the Linux kernel for the QEMU vexpress platform using the following commands:
 ```bash
-cd linux[version] 
+# To indentify your kernel version 
+cd linux[version]
+
+# #configure the kernel to vexpress default configuration
 make vexpress_defconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf-
+
+#configure the kernel with more configuration if needed 
 make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf-
+
+#build the kernel 
 make zImage modules dtbs ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf- -j$(nproc)
 ```
 
-## Running QEMU with the Kernel
+## Running QEMU
 
-**After building the kernel,** you can run QEMU with the vexpress platform and specify the built kernel image:
+**After building the kernel,** you can run QEMU with the vexpress platform :
+```bash
+sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
+```
 
 
 
