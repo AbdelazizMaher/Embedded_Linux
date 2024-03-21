@@ -87,7 +87,7 @@ ip link set $1 up
 A TAP interface in QEMU allows virtual machines to communicate with the host and other external networks using the host's networking stack.
 
 ```bash
-sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
+sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
 ```
 
 
