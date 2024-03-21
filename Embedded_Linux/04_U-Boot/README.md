@@ -34,13 +34,13 @@ make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-
 ```
 **The requirement are like following**:
 
-- [ ] Support **editenv**.
-- [ ] Support **bootd**.
-- [ ] Store the environment variable inside file call **uboot.env**.
+- [x] Support **editenv**.
+- [x] Support **bootd**.
+- [x] Store the environment variable inside file call **uboot.env**.
 - [ ] Unset support of **Flash**
-- [ ] Support **FAT file system**
-  - [ ] Configure the FAT interface to **mmc**
-  - [ ] Configure the partition where the fat is store to **0:1**
+- [x] Support **FAT file system**
+  - [x] Configure the FAT interface to **mmc**
+  - [x] Configure the partition where the fat is store to **0:1**
   
 ### 2.4. Build U-Boot:
 ```bash
