@@ -41,13 +41,13 @@ cfdisk sd.img
 
 ## 5. Create folders(number of partitions) and then Add file-system data structure to the partitions
 ```bash
-sudo mkfs.vfat -F 16 -n boot /dev/loop13p1
-sudo mkfs.ext4 -L rootfs /dev/loop13p2
+sudo mkfs.vfat -F 16 -n boot /dev/loop<chosen number>p1
+sudo mkfs.ext4 -L rootfs /dev/loop<chosen number>p2
 ```
 ## 6. Mount the file-system data structure to the partitions as every partition acts as a device
 ```bash
-sudo mount /dev/loop13p1 BOOT/
-sudo mount /dev/loop13p2 ROOTFS/
+sudo mount /dev/loop<chosen number>p1 BOOT/
+sudo mount /dev/loop<chosen number>p2 ROOTFS/
 ```
 ## 7. list block devices
 ```bash
