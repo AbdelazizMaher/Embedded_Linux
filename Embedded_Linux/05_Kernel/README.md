@@ -50,7 +50,7 @@ make zImage modules dtbs ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-corte
 
 **After building the kernel,** you can run QEMU with the vexpress platform :
 ```bash
-sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
+sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
 ```
 
 
