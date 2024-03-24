@@ -62,7 +62,7 @@ sudo apt-get install tftpd-hpa
 #Change the configuration of tftp
 sudo vim /etc/default/tftpd-hpa
 	#write inside the file
-    tftf_option = “--secure –-create”
+    TFTP_OPTIONS="--secure --create"
 #Restart the protocal
 Systemctl restart tftpd-hpa
 #Make sure the tftp protocol is running
@@ -73,6 +73,10 @@ sudo chown tftp:tftp tftp
 #Move your image or file to the server
 sudo cp <File name> /srv/tftp
 ```
+
+## TFTP configuration
+![](TFTP_configuration.png)
+
 ### Create Virtual Ethernet For QEMU
 
 Create a script `qemu-ifup` 
@@ -89,6 +93,14 @@ A TAP interface in QEMU allows virtual machines to communicate with the host and
 ```bash
 sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
 ```
+
+## uEnv.txt for U-Boot:
+
+**The uEnv.txt file** is a configuration file commonly used with U-Boot as the bootloader. It allows users to specify boot parameters and environment variables that are read by U-Boot during the boot process.
+
+- A typical uEnv.txt file includes key-value pairs specifying various boot parameters and commands for U-Boot.
+
+- If the filename uEnv.txt is changed, U-Boot will no longer automatically recognize and process the file during boot. The user would need to configure U-Boot to look for the new filename or specify the file manually during boot.
 
 
 
