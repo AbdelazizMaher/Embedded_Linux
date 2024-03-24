@@ -23,13 +23,16 @@ check_then_loadFAT=if mmc dev;then run load_fromFAT;else echo SD_Image not found
 loadFAT_Image=run check_then_loadFAT;run loadIMAGE
 
 # Command to load kernel image and device tree from TFTP server and then boot
-loadIMAGE=bootz $kernel_addr_r - $fdt_addr_r;
+loadIMAGE=bootz $kernel_addr_r - $fdt_addr_r
 
 # Command to load kernel image and device tree from TFTP server and then boot
 loadTFTP_Image=run load_fromTFTP;run loadIMAGE
 
 # Command to boot the system
 bootcmd=run loadFAT_Image;echo "Boot from TFTP server";run loadTFTP_Image
+
+# Kernel boot arguments:
+bootargs=console=ttyAMA0,38400n8 root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait init=/sbin/init
 
 
 # The following lines to load 'uEnv.txt' from TFTP and import its environment variables
