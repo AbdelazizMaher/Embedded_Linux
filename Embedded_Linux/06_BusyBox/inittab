@@ -1,0 +1,6 @@
+::sysinit:/etc/init.d/rcS
+
+ttyAMA0::askfirst:-/bin/sh
+
+::restart:/sbin/init
+
