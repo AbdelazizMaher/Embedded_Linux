@@ -45,13 +45,65 @@ make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-
 #build the kernel 
 make zImage modules dtbs ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf- -j$(nproc)
 ```
+## Booting Kernel on QEMU VExpress
 
-## Running QEMU
+### Boot from sd-card
 
-**After building the kernel,** you can run QEMU with the vexpress platform :
+Copy the zImage and dtb file to the boot partition of the sd-card
+```bash
+sudo cp linux/arch/arm/boot/zImage <path to boot patition>
+sudo cp linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb <path to boot patition>
+```
+Start Qemu to boot on U-boot
 ```bash
 sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
 ```
+Set the bootargs to
+```bash
+bootargs=console=ttyAMA0,38400n8
+```
+load kernel image zImage and DTB vexpress-v2p-ca9.dtb from sd-card into RAM
+```bash
+fatload mmc 0:1 $kernel_addr_r zImage
+fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+```
+boot the kernel with its device tree
+```bash
+bootz $kernel_addr_r - $fdt_addr_r
+```
+
+### Boot from TFTP
+
+Copy the zImage and dtb file to the tftp server as configured in /etc/default/tftpd-hpa
+```bash
+sudo cp linux/arch/arm/boot/zImage /srv/tftp/
+sudo cp linux/arch/arm/boot/dts/vexpress-v2p-ca9.dtb /srv/tftp/
+```
+Start Qemu to boot on U-boot
+```bash
+sudo qemu-system-arm -M vexpress-a9 -m 128M -nographic -kernel <Path To the u-boot>/u-boot -sd <Path To the sd.img>/sd.img -net tap,script=<Path To the script>/qemu-ifup -net nic
+```
+Set the bootargs to
+```bash
+bootargs=console=ttyAMA0,38400n8
+```
+load kernel image zImage and DTB vexpress-v2p-ca9.dtb from sd-card into RAM
+```bash
+tftp $kernel_addr_r zImage
+tftp $fdt_addr_r vexpress-v2p-ca9.dtb
+```
+boot the kernel with its device tree
+```bash
+bootz $kernel_addr_r - $fdt_addr_r
+```
+**The Kernel Fails to Boot: It Panics!**
+
+
+
+
+
+
+
 
 
 
