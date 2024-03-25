@@ -5,9 +5,9 @@
 
 ## 1. In a new folder, create a new file
 ```bash
-mkdir EmulatedSD
+mkdir EmulatedSD && cd EmulatedSD/
+
 touch sd.img
-cd EmulatedSD/
 ```
 
 ## 2. Create file size with 1 GB or (wanted size) filled with zeros
