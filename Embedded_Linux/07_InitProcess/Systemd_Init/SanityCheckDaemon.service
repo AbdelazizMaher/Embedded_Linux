@@ -1,0 +1,15 @@
+[Unit]
+Description=Sanity Check Daemon server
+Documentation=https://github.com/AbdelazizMaher/Embedded_Linux/tree/c3b5da7e592de32071176f564be0a4d6ebae7385/Embedded_Linux/07_InitProcess
+After=tftpd-hpa.service
+Wants=
+
+[Service]
+Type=simple
+ExecStart=/bin/PrintDaemon
+ExecStop=/etc/init.d/tftpd-hpa stop
+
+[Install]
+WantedBy=multi-user.target
+
+
