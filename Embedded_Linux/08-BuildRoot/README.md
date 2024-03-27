@@ -68,6 +68,82 @@ In order to configure SSH and add the executable in rootfs in **buildroot**
     Use `make menuconfig` to customize Buildroot configuration. You can add/remove packages, modify kernel settings, etc.
 
 
+# Create Buildroot Package
+
+Suppose you have a personalized package named "**SayHELLO**" that you want to add to your Root File System (Root FS) that you are creating with buildroot. In the simplest scenario, this package would include a source file and a makefile.
+
+1.  Create folder under package as following
+
+```bash
+mkdir  ./package/SayHELLO
+```
+
+2. Create source file under **APP** directory and write a simple code
+
+```bash
+vim sayHelloAPP.c
+```
+
+Inside the simple app write the following simple code
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+        printf("Hello from buidroot\r\n");
+        printf("Hello from buidroot\r\n");
+        printf("Hello from buidroot\r\n");
+
+        return 0;
+}
+```
+
+3. create the configuration file that will be used by builroot to show the package in menuconfig
+
+```bash
+vim Config.in
+```
+
+Inside the file add the following configuration
+
+```bash
+config BR2_PACKAGE_SAY-HELLO
+        bool "say-hello-app"
+        help
+          A package that display "hello from the buildroot".
+```
+
+4. Add the new Config.in in the configuration for buildroot
+
+Under **package directory**
+
+```bash
+vim ./package/Config.in
+```
+
+5. Add the new Config.in in the configuration for buildroot
+
+Under **package directory**
+```bash
+vim ./package/Config.in
+```
+Add new menu under Target Package
+```bash
+menu "APPs Packages"
+        source "package/SayHELLO/Config.in"
+endmenu
+```
+
+6. Create a package definition for this package in the buildroot source tree.
+```
+# under package/SayHELLO create the following Makefile
+vim simpleapp.mk
+```
+
+
+
+
 
 
 
