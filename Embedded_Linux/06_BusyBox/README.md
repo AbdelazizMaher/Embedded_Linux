@@ -37,14 +37,118 @@ make ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musle
 # this will create folder name _install has all binary
 make install
 ```
-### Create the Rootfs
+### Create the Rootfs Integration with QEMU
 
-As BusyBox generates the binaries no the root filesystem, We need to copy the binaries under the folder _install under file name backwards of BusyBox directory.
+As BusyBox generates the binaries no the root filesystem, We need to copy the binaries under the folder _install of BusyBox directory.
 
+```bash
+# to go out from busybox directory
+cd ..
 
-### Integration with QEMU
+# create directory rootfs
+mkdir rootfs
 
-To integrate BusyBox with QEMU, you need to include the BusyBox binary in the filesystem image used by QEMU. You can do this by mounting the filesystem image, copying the BusyBox binary into it, and configuring the system to use BusyBox for desired utilities.
+# copy the content inside the _install into rootfs with preserving the specified attributes
+cp -rp ./busybox/_install/ ./rootfs
+
+# copy the sysroot directory content from the toolchain generated , to use shared libirares on the target
+# using rsync not cp is for syncing the already presented folders and files from the busybox
+rsync -a ~/x-tools/arm-cortexa9_neon-linux-musleabihf/arm-cortexa9_neon-linux-musleabihf/sysroot/    ./rootfs
+
+# make sure the owner of files and directories is the root
+sudo chown root:root rootfs/
+
+# change directory to rootfs
+cd rootfs
+
+# create the rest folder for rootfs
+mkdir -p ./dev /etc /run /mnt /sys /proc
+
+#create folder inittab
+touch /etc/inittab
+```
+
+#### Configure Inittab
+
+We need to setup **inittab** file because it's the first thing that the **init** process look at
+
+```bash
+# inittab file 
+::sysinit:/etc/init.d/rcS
+# Start an "askfirst" shell on the console (whatever that may be)
+ttyAMA0::askfirst:-/bin/sh
+# Stuff to do when restarting the init process
+::restart:/sbin/init
+```
+# Mount rootfs through Emulated SD Card
+
+```bash
+# mount the sd card on the host file system
+sudo mount /dev/loop<chosen number>p1 BOOT/
+sudo mount /dev/loop<chosen number>p2 ROOTFS/
+
+# copy rootfs into the sd card
+cd ROOTFS
+sudo cp -rp * ROOTFS/
+
+# unmount the SD card
+sudo umount ROOTFS/
+```
+
+## Setup Bootargs in U-boot
+
+```bash
+setenv bootargs "console=ttyAMA0,38400n8 root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait init=/sbin/init"
+# console is set depends on the machine
+```
+
+# Mount rootfs Through NFS
+
+## Install NFS
+
+```bash
+# Install an NFS server
+sudo apt install nfs-kernel-server
+
+# Add exported directory to `/etc/exports` file, with target ip as follows
+/home/abdelaziz/NTI_WS/Linux_Workspace/EmulatedSD/NFS_rootfs  192.168.1.101(rw,no_root_squash,no_subtree_check)
+
+# Ask NFS server to apply this new configuration (reload this file)
+sudo exportfs -r
+```
+
+## Setup Bootargs in U-Boot
+
+```bash
+setenv bootargs "console=ttyAMA0,38400n8 root=/dev/nfs ip=192.168.1.101:::::eth0 nfsroot=192.168.1.99:/home/abdelaziz/NTI_WS/Linux_Workspace/EmulatedSD/NFS_rootfs,nfsvers=3,tcp rw init=/sbin/init"
+# make sure the console tty represet the machine you working on
+```
+
+# System configuration and startup 
+
+The first user space program that gets executed by the kernel is `/sbin/init` and its configuration
+file is `/etc/inittab`. in `inittab` we are executing `::sysinit:/etc/init.d/rcS`but this file doesn't exist.
+
+create `/etc/init.d/rcS` startup script and in this script mount `/proc` `/sys` filesystems:
+
+```sh 
+#!/bin/sh
+# mount a filesystem of type `proc` to /proc
+mount -t proc comment /proc
+# mount a filesystem of type `sysfs` to /sys
+mount -t sysfs comment /sys
+# you can create `/dev` and execute `mount -t devtmpfs comment /dev` if you missed the `devtmpfs` configuration  
+```
+
+Note: `can't run '/etc/init.d/rcS': Permission denied` , use 
+
+```sh
+#inside `rootfs` folder
+chmod +x ./etc/init.d/rcS # to give execution permission for rcS script
+#restart
+reboot
+```
+
 
 
 
