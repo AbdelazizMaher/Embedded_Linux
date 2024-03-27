@@ -98,9 +98,25 @@ int main(void)
         return 0;
 }
 ```
+3. No we need to create the Makefile that buildroot will use it to compile the following app, Buildroot invokes the Makefile as part of the overall build process.
+```bash
+# under APP directory create Makefile
+vim Makefile
+```
+Inside the Makefile write the following recipe
+```make
+CC := $(TARGET_CC)
+CFLAGS := -I.
 
+all: main.c
+    $(CC) -Os -Wall main.c -o helloworld
+    # $(STRIP) helloworld
+
+clean:
+    rm -f helloworld
 3. create the configuration file that will be used by builroot to show the package in menuconfig
-
+```
+4. Create the configuration file that will be used by builroot to show the package in menuconfig
 ```bash
 vim Config.in
 ```
@@ -141,6 +157,32 @@ endmenu
 vim simpleapp.mk
 ```
 
+Add the following script inside the makefile
+```make
+################################################################################
+#
+#  package
+#
+################################################################################
+HELLOWORLD_VERSION := 1.0.0
+HELLOWORLD_SITE := /path/to/your/helloworld/source
+HELLOWORLD_SITE_METHOD := local
+HELLOWORLD_INSTALL_TARGET := YES
+
+define HELLOWORLD_BUILD_CMDS
+    $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
+endef
+
+define HELLOWORLD_INSTALL_TARGET_CMDS
+    $(INSTALL) -D -m 0755 $(@D)/helloworld $(TARGET_DIR)/usr/bin
+endef
+
+define HELLOWORLD_PERMISSIONS
+    /usr/bin/helloworld f 4755 0 0 - - - - -
+endef
+
+$(eval $(generic-package))
+```
 
 
 
