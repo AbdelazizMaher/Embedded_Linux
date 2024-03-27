@@ -3,7 +3,7 @@
 BusyBox is a software suite that provides several Unix utilities in a single executable file. It is designed for embedded systems and aims to provide a small, efficient implementation of common command-line utilities.
 
 
-# BusyBox for QEMU
+## BusyBox for QEMU
 
 To use BusyBox for QEMU, you typically need to include it in the root filesystem of the virtual machine or development environment. This can be achieved by:
 
