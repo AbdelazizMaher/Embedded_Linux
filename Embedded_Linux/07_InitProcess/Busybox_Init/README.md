@@ -1,7 +1,5 @@
 
-#BusyBox Init
-
-## Configuration example :
+# Setup example of BusyBox Init
 
 ### Add the application
 
@@ -42,8 +40,8 @@ We need to add two scripts:
 - `/etc/init.d/S01PrintHello`
 
 	```bash
-	echo "rsc1 is on"
-	deamonapp &
+	echo "Starting PrintHello_Daemon"
+	./bin/PrintHello_Daemon &
 	```
 
 - `/etc/init.d/K01PrintHello`
@@ -62,9 +60,10 @@ We need to add two scripts:
 
 	# start shell
 	ttyAMA0::askfirst:-/bin/sh
-
+  
+	# Stuff to do when restarting the init process
 	::restart:/sbin/init
-
+  
 	# Excute when the system will go down
 	::shutdown:/etc/init.d/rcS 5
   ```
