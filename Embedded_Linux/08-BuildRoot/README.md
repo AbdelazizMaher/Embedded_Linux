@@ -11,8 +11,7 @@ Buildroot is a simple, efficient, and easy-to-use tool to generate embedded Linu
     ```bash
     git clone https://gitlab.com/buildroot.org/buildroot.git
     ```
-
-1.1 **Clone Buildroot Repository:**
+    or **Download Buildroot latest release(long time support release):**
     ```bash
     wget https://buildroot.org/downloads/buildroot-2024.02.1.tar.gz
     ## extract and decompress
@@ -56,13 +55,13 @@ In order to configure SSH and add the executable in rootfs in **buildroot**
 - [x]  Enable in **Network application** configure **dropbear**
 - [x]  Set **Root password** in **system configuration**
 
-5. **Build Buildroot:**
+
+6. **Build Buildroot:**
     ```bash
+    #This command will start the build process. It will compile the toolchain, kernel, bootloader, and root filesystem.
     make
     ```
-    This command will start the build process. It will compile the toolchain, kernel, bootloader, and root filesystem.
-
-
+    
 ## Configuration
 
 - **Customize Configuration:**
