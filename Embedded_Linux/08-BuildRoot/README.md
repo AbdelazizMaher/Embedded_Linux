@@ -98,25 +98,29 @@ int main(void)
         return 0;
 }
 ```
-3. No we need to create the Makefile that buildroot will use it to compile the following app, Buildroot invokes the Makefile as part of the overall build process.
+
+3. No we need to create the Makefile . Buildroot invokes the Makefile as part of the overall build process.
+   
 ```bash
 # under APP directory create Makefile
 vim Makefile
 ```
+
 Inside the Makefile write the following recipe
-```make
+```makefile
 CC := $(TARGET_CC)
 CFLAGS := -I.
 
-all: main.c
-    $(CC) -Os -Wall main.c -o helloworld
+all: SayHelloAPP.c
+    $(CC) -Os -Wall SayHelloAPP.c -o SayHelloAPP
     # $(STRIP) helloworld
 
 clean:
     rm -f helloworld
-3. create the configuration file that will be used by builroot to show the package in menuconfig
 ```
+
 4. Create the configuration file that will be used by builroot to show the package in menuconfig
+   
 ```bash
 vim Config.in
 ```
@@ -130,58 +134,84 @@ config BR2_PACKAGE_SAY-HELLO
           A package that display "hello from the buildroot".
 ```
 
-4. Add the new Config.in in the configuration for buildroot
-
-Under **package directory**
-
-```bash
-vim ./package/Config.in
-```
-
 5. Add the new Config.in in the configuration for buildroot
 
 Under **package directory**
+
 ```bash
 vim ./package/Config.in
 ```
+
+6. Add the new Config.in in the configuration for buildroot
+
+Under **package directory**
+```bash
+vim ./package/Config.in
+```
+
 Add new menu under Target Package
+
 ```bash
 menu "APPs Packages"
         source "package/SayHELLO/Config.in"
 endmenu
 ```
 
-6. Create a package definition for this package in the buildroot source tree.
+7. Create a package definition for this package in the buildroot source tree.
+
 ```
 # under package/SayHELLO create the following Makefile
 vim simpleapp.mk
 ```
 
 Add the following script inside the makefile
-```make
-################################################################################
-#
-#  package
-#
-################################################################################
-HELLOWORLD_VERSION := 1.0.0
-HELLOWORLD_SITE := /path/to/your/helloworld/source
-HELLOWORLD_SITE_METHOD := local
-HELLOWORLD_INSTALL_TARGET := YES
 
-define HELLOWORLD_BUILD_CMDS
+```makefile
+################################################################################
+#
+# Say-Hello-APP package
+#
+################################################################################
+
+SayHELLO_VERSION := 1.0.0
+SayHELLO_SITE := /path/to/your/helloworld/source
+SayHELLO_SITE_METHOD := local
+SayHELLO_INSTALL_TARGET := YES
+
+define SayHELLO_BUILD_CMDS
     $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
 endef
 
-define HELLOWORLD_INSTALL_TARGET_CMDS
-    $(INSTALL) -D -m 0755 $(@D)/helloworld $(TARGET_DIR)/usr/bin
+define SayHELLO_INSTALL_TARGET_CMDS
+    $(INSTALL) -D -m 0755 $(@D)/SayHelloAPP $(TARGET_DIR)/usr/bin
 endef
 
 define HELLOWORLD_PERMISSIONS
-    /usr/bin/helloworld f 4755 0 0 - - - - -
+    /usr/bin/SayHelloAPP f 4755 0 0 - - - - -
 endef
 
 $(eval $(generic-package))
+```
+
+8. Enable the package in buildroot menuconfig
+
+```bash
+# change directory to builroot
+cd builroot
+# configure the builroot
+make menuconfig
+
+# under target package you will find simpleapp
+# add it to the configuration
+```
+
+7. Build builroot again
+
+After building the builroot the execution file for simple app will be add it to the rootfs
+
+```bash
+# build the buildroot
+make -j$(nproc)
 ```
 
 
