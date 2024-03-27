@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -f ~/.bashrc ]
+then
+	# Global Environment variable
+	echo "export HELLO=$HOSTNAME" >> ~/.bashrc
+	# Local shell variable 
+        echo "LOCAL=whoami"  >> ~/.bashrc
+        # Source .bashrc to run it again -> execute the newly added variables
+        source "$HOME/.bashrc"
+        # Open New terminal ( child process )
+        gnome-terminal	
+fi 
