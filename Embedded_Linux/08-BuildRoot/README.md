@@ -108,15 +108,17 @@ vim Makefile
 
 Inside the Makefile write the following recipe
 ```makefile
+# Just a simple package
+
 CC := $(TARGET_CC)
 CFLAGS := -I.
 
 all: SayHelloAPP.c
-    $(CC) -Os -Wall SayHelloAPP.c -o SayHelloAPP
-    # $(STRIP) helloworld
+        @$(CC)  -g -Wall $(CFLAGS) $(LDFLAGS) $< -o SayHelloAPP
 
 clean:
-    rm -f helloworld
+        @rm -f SayHelloAPP
+
 ```
 
 4. Create the configuration file that will be used by builroot to show the package in menuconfig
@@ -173,21 +175,21 @@ Add the following script inside the makefile
 #
 ################################################################################
 
-SayHELLO_VERSION := 1.0.0
-SayHELLO_SITE := /path/to/your/helloworld/source
-SayHELLO_SITE_METHOD := local
-SayHELLO_INSTALL_TARGET := YES
+SAYHELLO_VERSION := 1.0.0
+SAYHELLO_SITE := package/SayHELLO/APP
+SAYHELLO_SITE_METHOD := local
+SAYHELLO_INSTALL_TARGET := YES
 
-define SayHELLO_BUILD_CMDS
-    $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
+define SAYHELLO_BUILD_CMDS
+        $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
 endef
 
-define SayHELLO_INSTALL_TARGET_CMDS
-    $(INSTALL) -D -m 0755 $(@D)/SayHelloAPP $(TARGET_DIR)/usr/bin
+define SAYHELLO_INSTALL_TARGET_CMDS
+        $(INSTALL) -D -m 0755 $(@D)/SayHelloAPP $(TARGET_DIR)/usr/bin/SayHelloAPP
 endef
 
-define HELLOWORLD_PERMISSIONS
-    /usr/bin/SayHelloAPP f 4755 0 0 - - - - -
+define SAYHELLO_PERMISSIONS
+        /usr/bin/SayHelloAPP f 4755 0 0 - - - - -
 endef
 
 $(eval $(generic-package))
@@ -213,6 +215,14 @@ After building the builroot the execution file for simple app will be add it to 
 # build the buildroot
 make -j$(nproc)
 ```
+
+**Note** If it doesn't appear on target:
+
+1. Make sure your package is enabled in the Buildroot configuration. You can do this by running make menuconfig and navigating to Package Selection for the target
+
+2. Ensure that your package is included in the BR2_PACKAGE_HELLO variable in your Buildroot .config file. This file contains the configuration options for your Buildroot setup.
+
+3. If your package is not automatically built and transferred to the target, you might need to add it explicitly as a dependency to the default target (all). You can do this by modifying the top-level Makefile in your Buildroot project. 
 
 
 
