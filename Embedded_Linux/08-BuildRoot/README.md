@@ -216,7 +216,7 @@ After building the builroot the execution file for simple app will be add it to 
 make -j$(nproc)
 ```
 
-**Note** If it doesn't appear on target:
+**Note If APP doesn't appear on target:**
 
 1. Make sure your package is enabled in the Buildroot configuration. You can do this by running make menuconfig and navigating to Package Selection for the target
 
