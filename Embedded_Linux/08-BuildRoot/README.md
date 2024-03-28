@@ -99,7 +99,7 @@ int main(void)
 }
 ```
 
-3. No we need to create the Makefile . Buildroot invokes the Makefile as part of the overall build process.
+3. we need to create the Makefile . Buildroot invokes the Makefile as part of the overall build process.
    
 ```bash
 # under APP directory create Makefile
@@ -163,7 +163,7 @@ endmenu
 
 ```
 # under package/SayHELLO create the following Makefile
-vim simpleapp.mk
+vim SayHELLO.mk
 ```
 
 Add the following script inside the makefile
@@ -203,13 +203,13 @@ cd builroot
 # configure the builroot
 make menuconfig
 
-# under target package you will find simpleapp
+# under target package you will find APPs Packages
 # add it to the configuration
 ```
 
 7. Build builroot again
 
-After building the builroot the execution file for simple app will be add it to the rootfs
+After building the builroot, the execution file for SayHelloAPP will be add to the rootfs
 
 ```bash
 # build the buildroot
