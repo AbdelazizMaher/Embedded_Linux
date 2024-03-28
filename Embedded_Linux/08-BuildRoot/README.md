@@ -224,7 +224,7 @@ make -j$(nproc)
 
 3. If your package is not automatically built and transferred to the target, you might need to add it explicitly as a dependency to the default target (all). You can do this by modifying the top-level Makefile in your Buildroot project. 
 
-
+![](add_toBUILD.png)
 
 
 
