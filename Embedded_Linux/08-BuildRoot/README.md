@@ -72,6 +72,8 @@ In order to configure SSH and add the executable in rootfs in **buildroot**
 
 Suppose you have a personalized package named "**SayHELLO**" that you want to add to your Root File System (Root FS) that you are creating with buildroot. In the simplest scenario, this package would include a source file and a makefile.
 
+**For information about making personalized packages:** https://buildroot.org/downloads/manual/manual.html#adding-packages
+
 1.  Create folder under package as following
 
 ```bash
