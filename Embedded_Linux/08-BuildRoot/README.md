@@ -74,6 +74,8 @@ Suppose you have a personalized package named "**SayHELLO**" that you want to ad
 
 **For information about making personalized packages:** https://buildroot.org/downloads/manual/manual.html#adding-packages
 
+![](PackageTREE.png)
+
 1.  Create folder under package as following
 
 ```bash
