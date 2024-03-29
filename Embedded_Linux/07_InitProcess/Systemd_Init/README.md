@@ -1,7 +1,7 @@
 # Setup example of Systemd Init on Ubuntu
 
 
-# Systemd Unit Types
+## Systemd Unit Types
 
 - **Service Units**: Manage system services or daemons.
 - **Socket Units**: Handle inter-process communication sockets.
