@@ -1,6 +1,6 @@
 # Setup example of SystemV Init on Ubuntu with systemd
 
-```
+
 **Note:** In Ubuntu and many other Linux distributions, including those that use systemd as the init system, SystemV runlevels are often still present for compatibility reasons.
 
 `/etc/init.d/PrintDaemon.sh`
@@ -62,7 +62,7 @@ exit 0
   ln -s ../init.d/PrintDaemon.sh ./etc/rc5.d/K40PrintDaemon.sh
   ```
   
- - to switch to runlevel
+- to switch to runlevel
   
   ```sh
   # init 5 also work
