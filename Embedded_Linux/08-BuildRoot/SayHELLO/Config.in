@@ -1,0 +1,5 @@
+config BR2_PACKAGE_SAY-HELLO
+        bool "say-hello-app"
+        help
+          A package that display "hello from the buildroot".
+
