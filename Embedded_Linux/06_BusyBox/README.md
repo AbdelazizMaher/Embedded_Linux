@@ -25,7 +25,7 @@ To compile BusyBox for QEMU, follow these steps:
 cd busybox
 
 # Configure BusyBox for the desired target architecture. For example, for ARM architecture:
-make defconfig ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- 
+make defconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf-
 
 # Customize the BusyBox configuration as needed:
 make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf- 
