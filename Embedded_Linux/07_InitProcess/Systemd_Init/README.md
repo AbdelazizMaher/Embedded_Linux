@@ -3,18 +3,18 @@
 
 ## Systemd Unit Types
 
-- **Service Units**: Manage system services or daemons.
-- **Socket Units**: Handle inter-process communication sockets.
-- **Target Units**: Group other units together for dependency management.
-- **Device Units**: Represent devices in the Linux device tree.
-- **Mount Units**: Manage mount points in the filesystem.
-- **Automount Units**: Automatically mount filesystems when accessed.
-- **Path Units**: Trigger actions based on changes to paths in the filesystem.
-- **Timer Units**: Activate other units based on time.
-- **Slice Units**: Manage resource usage limits for system processes.
-- **Scope Units**: Group processes created outside of systemd's control.
-- **Swap Units**: Manage swap space in the system.
-- **Snapshot Units**: Save and restore the state of systemd.
+- **`Service Units`**: Manage system services or daemons.
+- **`Socket Units`**: Handle inter-process communication sockets.
+- **`Target Units`**: Group other units together for dependency management.
+- **`Device Units`**: Represent devices in the Linux device tree.
+- **`Mount Units`**: Manage mount points in the filesystem.
+- **`Automount Units`**: Automatically mount filesystems when accessed.
+- **`Path Units`**: Trigger actions based on changes to paths in the filesystem.
+- **`Timer Units`**: Activate other units based on time.
+- **`Slice Units`**: Manage resource usage limits for system processes.
+- **`Scope Units`**: Group processes created outside of systemd's control.
+- **`Swap Units`**: Manage swap space in the system.
+- **`Snapshot Units`**: Save and restore the state of systemd.
 
 ## Example on service units
 
@@ -41,16 +41,16 @@ WantedBy=multi-user.target
 - **Documentation**: A link to the documentation for more information about the service.
 
 - **Dependencies**:
-  - **After**: Specifies that this service should start after `tftpd-hpa.service`.
-  - **Wants**: (Empty) Additional units that are wanted when this unit is activated. In this case, it's not specifying any additional dependencies.
+  - **`After`**: Specifies that this service should start after `tftpd-hpa.service`.
+  - **`Wants`**: (Empty) Additional units that are wanted when this unit is activated. In this case, it's not specifying any additional dependencies.
 
 - **Service Definition**:
-  - **Type**: Describes the startup type of the service. `simple` means that the process started by the service manager will not fork or background itself.
-  - **ExecStart**: Specifies the command to start the service. In this case, it's `/bin/PrintDaemon`.
-  - **ExecStop**: Specifies the command to stop the service. In this case, it's `/etc/init.d/tftpd-hpa stop`.
+  - **`Type`**: Describes the startup type of the service. `simple` means that the process started by the service manager will not fork or background itself.
+  - **`ExecStart`**: Specifies the command to start the service. In this case, it's `/bin/PrintDaemon`.
+  - **`ExecStop`**: Specifies the command to stop the service. In this case, it's `/etc/init.d/tftpd-hpa stop`.
 
 - **Installation Information**:
-  - **WantedBy**: Specifies the target units that this unit should be installed with. In this case, it's `multi-user.target`, which typically represents a non-graphical multi-user system.
+  - **`WantedBy`**: Specifies the target units that this unit should be installed with. In this case, it's `multi-user.target`, which typically represents a non-graphical multi-user system.
 
 
 
