@@ -173,7 +173,7 @@ You can tell bitbake to delete all the source code, build files after building a
 ```bash
 INHERIT += "rm_work"
 ```
-Disadvantage: Difficult to debug while build fails of any recipe.
+**Disadvantage:** Difficult to debug while build fails of any recipe.
 
 
 ## Steps to generate an Yocto Image for Raspberry Pi4
@@ -194,18 +194,22 @@ Step2: Download meta-openembedded branch as meta-raspberrypi layer depends upon 
 git clone git://git.openembedded.org/meta-openembedded
 ```
 
-Step4: Run the environment script to setup the Yocto Environment and create build directory
+Step3: Run the environment script to setup the Yocto Environment and create build directory
+```bash
+source poky/oe-init-build-env [ build_directory ]
+```
 
-$ source poky/oe-init-build-env [ build_directory ]
+Step4: Add meta-openembedded layers ( meta-oe, meta-multimedia, meta-networking, meta-python) and meta-raspberrypi layer to bblayers.conf
 
-Step5: Add meta-openembedded layers ( meta-oe, meta-multimedia, meta-networking, meta-python) and meta-raspberrypi layer to bblayers.conf
+Step4: Set the MACHINE in local.conf to "raspberrypi4-64".
+```bash
+echo 'MACHINE = "raspberrypi4_64"' >> conf/local.conf
+```
 
-Step6: Set the MACHINE in local.conf to "raspberrypi3".
-$ echo 'MACHINE = "raspberrypi4_64"' >> conf/local.conf
-
-Step7: Final step is to build the image. To find out the available images:
-$ ls ../meta-raspberrypi/recipes-*/images/
-
+Step6: Final step is to build the image. To find out the available images:
+```bash
+ls ../meta-raspberrypi/recipes-*/images/
+```
 
 ## Images
 
