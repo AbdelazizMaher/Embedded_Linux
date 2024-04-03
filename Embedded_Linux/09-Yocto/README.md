@@ -1,73 +1,27 @@
 # Yocto Project
 
-
 **Yocto project** provides open source, high quality infrastructure and tools to help developers create their own custom Linux distributions for any hardware architecture.
 
-**Yocto?**
+**Yocto?** 
+Yocto is the smallest SI metric system prefix Like 'm' stands for milli ( 10^-3 ).So is yocto ( y = 10^-24 )
 
-Yocto is the smallest SI metric system prefix
-
-Like 'm' stands for milli ( 10^-3 ).
-
-So is yocto ( y = 10^-24 )
-
-
-
-## History
-
-Founded in 2010,  in an effort to reduce work duplication, provide resources and information catering to both new and experienced users.
-
-collaboration of:
-	- many hardware manufacturers
-	- open source operating systems vendors and
-	- electronics companies
-
-**Yocto** is also a project working group of the Linux Foundation
-
-## Advantages of Yocto Project
-
-1. Widely Adopted Across the Industry
-	- Semiconductor, operating system, software, and service vendors exist whose products and services adopt and support the Yocto Project.
-	Eg. Intel, Facebook, arm, Juniper Networks, LG, AMD, NXP, DELL
-
-2. Architecture Agnostic
-	- supports Intel, ARM, MIPS, AMD, PPC and other architectures
-	- chip vendors create and supply BSPs that support their hardware
-	- if you have custom silicon, you can create a BSP that supports that architecture
-	- the Yocto Project fully supports a wide range of device emulation through the Quick EMUlator (QEMU)
-
-3. Images and Code Transfer Easily
-	- Yocto Project output can easily move between architectures without moving to new development environments.
-
-4. Flexibility
-	- Through customization and layering, a project group can leverage the base Linux distribution to create a distribution that works for their product needs.
-
-5. Ideal for Constrained Embedded and IoT devices
-	- Unlike a full Linux distribution, you can use the Yocto Project to create exactly what you need for embedded devices
-	You only add the feature support or packages that you absolutely need for the device
-
-6. Uses a Layer Model
-	- The Yocto Project layer infrastructure groups related functionality into separate bundles.
-	- You can incrementally add these grouped functionalities to your project as needed
-	- Allows you to easily extend the system, make customizations, and keep functionality organized.
-	
 		
 ## What is Yocto Project
 
 To understand the outcome provided by the Yocto Project, we can use the analogy of the computing machine
 
-Input: Set of data that describes what we want, that is our specification 
-		(Kernel Configuration, Hardware Name, Packages/Binaries to be installed)
+**Input:** Set of data that describes what we want, that is our specification 
 
-Output: Linux Based Embedded Product 
-		(Linux Kernel, Root File System, Bootloader, Device Tree, Toolchain)
+		 (Kernel Configuration, Hardware Name, Packages/Binaries to be installed)
+
+**Output:** Linux Based Embedded Product 
+
+		 (Linux Kernel, Root File System, Bootloader, Device Tree, Toolchain)
 		
 		
 ## Setting up Build Machine
 
-
 ### Prerequisites
-
 
 1. 50 Gbytes of free disk space
 
@@ -80,9 +34,9 @@ Output: Linux Based Embedded Product
 
 	Python 3.4.0 or greater.
 
-Packages and package installation vary depending on your development system.
+#### Packages and package installation vary depending on your development system.
 
-(*) Install the required packages for Yocto to Work from
+- [x] Install the required packages for Yocto to Work from
         https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#ubuntu-packages
 
 ```bash
@@ -92,40 +46,7 @@ xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl
 pylint3 xterm
 ```
     
-    
-meta-yocto-bsp
-----------------
-
-A Board Support Package (BSP) is a collection of information that defines how to support a particular hardware device, set of devices, or hardware platform
-
-The BSP includes information about the hardware features present on the device and kernel configuration information along with any additional hardware drivers required.
-
-The BSP also lists any additional software components required in addition to a generic Linux software stack for both essential and optional platform features.
-
-The meta-yocto-bsp layer in Poky maintains several BSPs such as the Beaglebone, EdgeRouter, and generic versions of both 32-bit and 64-bit IA machines.
-
-Machines supported
--------------------
-Texas Instruments BeagleBone (beaglebone)
-Freescale MPC8315E-RDB (mpc8315e-rdb)
-Intel x86-based PCs and devices (genericx86 and genericx86-64)
-Ubiquiti Networks EdgeRouter Lite (edgerouter)
-
-Note: To develop on different hardware, you will need to complement Poky with hardware-specific Yocto layers.	
-
-
-
-Others
---------
-
-meta-poky, which is Poky-specific metadata
-
-Documentation, which contains the Yocto Project source files used to make the set of user manuals.
-
-
-	
 ## Workflow of Yocto Project
-
 
 Step 1: Download the Poky Source code
 
@@ -141,9 +62,7 @@ git checkout dunfell
 
 Step 3: Prepare the build environment
 
-Poky provides you a script **'oe-init-build-env'**, which should be used to setup the build environment
-
-script will set up your environment to use Yocto build system,including adding the BitBake utility to your path
+Poky provides you a script **'oe-init-build-env'**, which should be used to setup the build environment, This script will set up your environment to use Yocto build system,including adding the BitBake utility to your path
 
 ```bash
 # Here build_directory is an optional argument for the name of the directory where the environment is set
@@ -151,7 +70,7 @@ script will set up your environment to use Yocto build system,including adding t
 source poky/oe-init-build-env [ build_directory ]
 ```
 
-The above script will move you in a build folder and create two files ( local.conf, bblayers.conf ) inside conf folder
+The above script will move you in a build folder and create two files `**( local.conf, bblayers.conf )**` inside conf folder
 
 Step 4: Building Linux Distribution
 
@@ -160,48 +79,35 @@ Step 4: Building Linux Distribution
 bitbake <image_name>
 ```
 
-
 ## Command to run the generated image in QEMU
 
 Quick Emulator ( QEMU ) is a free and open source software package that performs hardware virtualization.
 
-The QEMU based machines allow test and development without real hardware.
-
-Currently emulations are supported for:
-        • ARM
-        • MIPS
-        • MIPS64
-        • PowerPC
-        • X86
-        • X86_64
-
-
 Poky provides a script 'runqemu' which will allow you to start the QEMU using yocto generated images.
 
 The runqemu script is run as:
-
+   ```bash
    runqemu <machine> <zimage> <filesystem>
+   ```
+**where:**
 
-where:
+   `<machine>` is the machine/architecture to use (qemuarm/qemumips/qemuppc/qemux86/qemux86-64)
+   
+   `<zimage>` is the path to a kernel (e.g. zimage-qemuarm.bin)
+   
+   `<filesystem>` is the path to an ext2 image (e.g. filesystem-qemuarm.ext2) or an nfs directory
 
-   <machine> is the machine/architecture to use (qemuarm/qemumips/qemuppc/qemux86/qemux86-64)
-   <zimage> is the path to a kernel (e.g. zimage-qemuarm.bin)
-   <filesystem> is the path to an ext2 image (e.g. filesystem-qemuarm.ext2) or an nfs directory
+**Exit QEMU** by either clicking on the shutdown icon or by typing **Ctrl-C** in the QEMU transcript window from which you evoked QEMU.
 
-Full usage instructions can be seen by running the command with no options specified.
-
-**Exit QEMU** Exit QEMU by either clicking on the shutdown icon or by typing Ctrl-C in the QEMU transcript window from which you evoked QEMU.
-
-
-**Nographic** You can launch QEMU without the graphic window by adding `nographic` to the command line
-
+**Nographic** You can launch QEMU without the graphic window by adding `**nographic**` to the command line
 
 
-## To add a particular package in your root file system
+### To add a particular package in your root file system
 
 Open your local.conf file and add the recipe name below
-
+```bash
 IMAGE_INSTALL:append = " recipe-name"
+```
 
 **Note** avoid using +=, =+, .= and =. in `$BUILDDIR/conf/local.conf`. Always use **overrides**
 
@@ -210,53 +116,56 @@ BB_NUMBER_THREADS
 
 	Determines the number of tasks that Bitbake will perform in parallel
 	Note: These tasks are related to bitbake and nothing related to compiling
-	Defaults to the number of CPUs on the system
-	```bash
+	Defaults to the number of CPUs on the system 
+ 
 	bitbake -e core-image-minimal | grep ^BB_NUMBER_THREADS=
-	```
+	
 
 PARALLEL_MAKE
 
 	Corresponds to the -j make option
 	specifies the number of processes that GNU make can run in parallel on a compilation task
 	Defaults to the number of CPUs on the system
-	```bash
+ 
 	bitbake -e core-image-minimal | grep ^PARALLEL_MAKE=
-	```
+
 	
-
-
 ### Images generated by Poky Build
 
 The build process writes images out to the Build Directory inside the tmp/deploy/images/machine/ folder
 
-1. kernel-image: 
+1. kernel-image:
+   
 		A kernel binary file
 		The KERNEL_IMAGETYPE variable determines the naming scheme for the kernel image file.
-		```bash
-		bitbake -e core-image-minimal | grep ^KERNEL_IMAGETYPE=
-		```
 
-2. root-filesystem-image: 
-		Root filesystems for the target device (e.g. *.ext3 or *.bz2 files).
-		The IMAGE_FSTYPES variable determines the root filesystem image type
-		```bash
-		bitbake -e core-image-minimal | grep ^IMAGE_FSTYPES=
-		```
+		bitbake -e core-image-minimal | grep ^KERNEL_IMAGETYPE=
 		
-3. kernel-modules:
+
+3. root-filesystem-image:
+   
+		Root filesystems for the target device (e.g. *.ext3 or *.bz2 files).
+		The `**IMAGE_FSTYPES**` variable determines the root filesystem image type
+		
+		bitbake -e core-image-minimal | grep ^IMAGE_FSTYPES=
+   
+		
+5. kernel-modules:
+   
 		Tarballs that contain all the modules built for the kernel
 
-4. bootloaders:
+7. bootloaders:
+   
 		If applicable to the target machine, bootloaders supporting the image.
 
-**Note:** 
-	symlinks
+- [x] symlinks
+ 
 	- symbolic link pointing to the most recently built file for each machine
+ 
 	- These links might be useful for external scripts that need to obtain  latest version of each file	
 
 		
-## Saving Disk Space while building Yocto 
+### Saving Disk Space while building Yocto 
 
 Yocto Build System can take a lot of disk space during build. But bitbake provides options to preserve disk space
 
@@ -267,7 +176,7 @@ INHERIT += "rm_work"
 Disadvantage: Difficult to debug while build fails of any recipe.
 
 
-## Steps to generate an Yocto Image for Raspberry Pi3
+## Steps to generate an Yocto Image for Raspberry Pi4
 
 Poky has no support for Broadcom BCM SoC.
 
