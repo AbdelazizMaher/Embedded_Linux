@@ -6,7 +6,7 @@ Wants=
 
 [Service]
 Type=simple
-ExecStart=/bin/
+ExecStart=/bin/LogFileDaemonAPP
 ExecStop=/etc/init.d/tftpd-hpa stop
 
 [Install]
