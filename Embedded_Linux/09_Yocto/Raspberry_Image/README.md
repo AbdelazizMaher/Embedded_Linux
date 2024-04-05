@@ -45,6 +45,7 @@ bitbake-layers add-layer <path to directory>/meta-openembedded/meta-oe
 bitbake-layers add-layer <path to directory>/meta-openembedded/meta-python
 bitbake-layers add-layer <path to directory>/meta-openembedded/meta-multimedia
 bitbake-layers add-layer <path to directory>/meta-openembedded/meta-networking
+bitbake-layers show-layers
 ```
 
 Step7: Set the MACHINE in local.conf to "raspberrypi4-64".
