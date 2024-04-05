@@ -1,0 +1,15 @@
+[Unit]
+Description=Log kmsg in logfile.txt and toggle capslock Daemon server
+Documentation=
+After=tftpd-hpa.service
+Wants=
+
+[Service]
+Type=simple
+ExecStart=/bin/
+ExecStop=/etc/init.d/tftpd-hpa stop
+
+[Install]
+WantedBy=multi-user.target
+
+
