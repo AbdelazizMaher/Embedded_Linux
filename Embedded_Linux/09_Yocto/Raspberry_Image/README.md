@@ -9,26 +9,50 @@ Step1: Download the BSP Layer for Raspberry Pi4
 git clone git://git.yoctoproject.org/meta-raspberrypi
 ```
 
-Step2: Download meta-openembedded branch as meta-raspberrypi layer depends upon it
+Step2: vim on README.md in meta-raspberrypi to see the dependencies
 
+This layer depends on:
+
+* URI: git://git.yoctoproject.org/poky
+  * branch: master
+  * revision: HEAD
+
+* URI: git://git.openembedded.org/meta-openembedded
+  * layers: meta-oe, meta-multimedia, meta-networking, meta-python
+  * branch: master
+  * revision: HEAD
+    
+Step3: Download the meta-openembedded dependency
 ```bash
 # Make sure to check out to the same branch of poky
 git clone git://git.openembedded.org/meta-openembedded
 ```
 
-Step3: Run the environment script to setup the Yocto Environment and create build directory
+Step4: vim on README.md in meta-openembedded to see the dependencies
+```
+meta-oe, meta-multimedia, meta-networking, meta-python are included in the meta-openembedded directory
+```
+
+Step5: Run the environment script to setup the Yocto Environment and create build directory
 ```bash
 source poky/oe-init-build-env [ build_directory ]
 ```
 
-Step4: Add meta-openembedded layers ( meta-oe, meta-multimedia, meta-networking, meta-python) and meta-raspberrypi layer to bblayers.conf
+Step6: Add meta-openembedded layers ( meta-oe, meta-multimedia, meta-networking, meta-python) and meta-raspberrypi layer to bblayers.conf
+```bash
+bitbake-layers add-layer <path to directory>/meta-raspberrypi
+bitbake-layers add-layer <path to directory>/meta-openembedded/meta-oe 
+bitbake-layers add-layer <path to directory>/meta-openembedded/meta-python
+bitbake-layers add-layer <path to directory>/meta-openembedded/meta-multimedia
+bitbake-layers add-layer <path to directory>/meta-openembedded/meta-networking
+```
 
-Step4: Set the MACHINE in local.conf to "raspberrypi4-64".
+Step7: Set the MACHINE in local.conf to "raspberrypi4-64".
 ```bash
 echo 'MACHINE = "raspberrypi4-64"' >> conf/local.conf
 ```
 
-Step6: Final step is to build the image. To find out the available images:
+Step7: Final step is to build the image. To find out the available images:
 ```bash
 ls ../meta-raspberrypi/recipes-*/images/
 ```
