@@ -118,7 +118,6 @@ Kernel headers are used primarily during the compilation of kernel modules and c
 
 `sbin:` Provides the ldconfig utility, used to optimize library loading paths
 
-### ===========================================================================
 
 ## Test the generated toolchain for avr
 
