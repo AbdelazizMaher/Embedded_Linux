@@ -45,7 +45,6 @@ Follow these steps to configure CrossTool-NG:
 
 After the build process completes successfully, you can find your custom toolchain in the directory specified during configuration (usually ~/x-tools by default). Use this toolchain with your embedded development projects to cross-compile your code for your target platform.
 
-### ===========================================================================
 
 ## Components of a toolchain
 
@@ -98,7 +97,6 @@ The kernel headers typically include header files for various subsystems of the 
 
 Kernel headers are used primarily during the compilation of kernel modules and certain user-space programs.
 
-### ===========================================================================
 
 ### Sysroot
 
@@ -120,7 +118,6 @@ Kernel headers are used primarily during the compilation of kernel modules and c
 
 `sbin:` Provides the ldconfig utility, used to optimize library loading paths
 
-### ===========================================================================
 
 ## Test the generated toolchain for avr
 
