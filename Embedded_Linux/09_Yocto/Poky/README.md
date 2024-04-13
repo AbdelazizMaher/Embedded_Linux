@@ -2,7 +2,7 @@
 
 **Poky** is a reference distribution of Yocto Project. The word **"reference"** is used to mean **"example"** in this context.
 
-Yocto Project uses Poky to build images (kernel, system, and application software) for targeted hardware.
+Yocto Project uses Poky to build images `(kernel, system, and application software)`for targeted hardware.
 
 At the technical level it is a combined repository of the components:
 
