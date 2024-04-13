@@ -1,65 +1,65 @@
 # Poky
 
-Poky is a reference distribution of Yocto Project. The word "reference" is used to mean "example" in this context.
+**Poky** is a reference distribution of Yocto Project. The word **"reference"** is used to mean **"example"** in this context.
 
 Yocto Project uses Poky to build images (kernel, system, and application software) for targeted hardware.
 
-At the technical level it is a combined repository of the components
-	• Bitbake
-	• OpenEmbedded Core
-	• meta-yocto-bsp
-	• Documentation
+At the technical level it is a combined repository of the components:
 
-Note: Poky does not contain binary files,it is a working example of how to build your own custom Linux distribution from source.
+-  Bitbake
+-  OpenEmbedded Core
+-  meta-yocto-bsp
+-  Documentation
 
-## What is difference between poky and Yocto
+**Note:** Poky does not contain binary files,it is a working example of how to build your own custom Linux distribution from source.
 
-The exact difference between Yocto and Poky is Yocto refers to the organization ( like one would refer to 'canonical', the company behind Ubuntu ), and Poky refers to the actual bits downloaded ( analogous to 'Ubuntu' )
+## Difference between poky and Yocto
 
+Difference between Yocto and Poky is Yocto refers to the organization `( like one would refer to 'canonical', the company behind Ubuntu )`, and Poky refers to the actual bits downloaded` ( analogous to 'Ubuntu' )`
 
-## Metadata 
+**Poky includes:**
 
-Non Yocto:  A set of data that describes and gives information about other data
+- some OE components(oe-core)
+- bitbake
+- demo-BSP's
+- helper scripts to setup environment
+- emulator QEMU to test the image
 
-Yocto World: 
-	Metadata refers to the build instructions
-	Commands and data used to indicate what versions of software are used
-	Where they are obtained from
-	Changes or additions to the software itself ( patches ) which are used to fix bugs or customize the software for use in a particular situation
+  
+| Poky = Bitbake + Metadata |
+| :-----------------------: |
 
-Metadata is collection of
-	• Configuration files (.conf)
-	• Recipes (.bb and .bbappend)
-	• Classes (.bbclass)
-	• Includes (.inc)
+**Metadata is collection of:**
+
+- Configuration files (.conf)
+- Recipes (.bb and .bbappend)
+- Classes (.bbclass)
+- Includes (.inc)	
 	
-Metadata
---------------
 
-Poky = Bitbake + Metadata
+ 
+### 1- Metadata 
 
-Metadata is collection of
-	• Configuration files (.conf)
-	• Recipes (.bb and .bbappend)
-	• Classes (.bbclass)
-	• Includes (.inc)	
+**Yocto World:**
+
+- Metadata refers to the build instructions
+- Commands and data used to indicate what versions of software are used
+- Where they are obtained from
+- Changes or additions to the software itself ( patches ) which are used to fix bugs or customize the software for use in a particular situation
+
+**Metadata is collection of:**
+
+- Configuration files (.conf)
+- Recipes (.bb and .bbappend)
+- Classes (.bbclass)
+- Includes (.inc)
+
 	
-## Poky includes 
-	some OE components(oe-core)
-	bitbake
-	demo-BSP's
-	helper scripts to setup environment
-	emulator QEMU to test the image
-	
-	
-Recipes
----------
+### 2- Recipes
 
-Non-Yocto: A recipe is a set of instructions that describe how to prepare or make something, especially a dish
+A recipe is a set of instructions that is read and processed by the bitbake
 
-Yocto: A recipe is a set of instructions that is read and processed by the bitbake
-
-Extension of Recipe: .bb
+**Extension of Recipe: .bb**
 
 A recipe describes:
     where you get source code
@@ -72,33 +72,19 @@ A recipe describes:
 a software component
 
 
-
-
-Configuration Files
---------------------
+### 3- Configuration Files
 
 Files which hold
-    global definition of variables
-    user defined variables and
-    hardware configuration information
+- global definition of variables
+- user defined variables and
+- hardware configuration information
 
 They tell the build system what to build and put into the image to support a particular platform
 
-Extension: .conf
-
-Types
---------
-
-	• Machine Configuration Options
-	• Distribution Configuration Options
-	• Compiler tuning options
-	• General Common Configuration Options
-	• User Configuration Options (local.conf)
+**Extension: .conf**
 	
 	
-	
-classes
----------
+### 3- classes
 
 Class files are used to abstract common functionality and share it amongst multiple recipe (.bb) files
 
@@ -106,7 +92,7 @@ To use a class file, you simply make sure the recipe inherits the class
 
 Eg. inherit classname
 
-Extension: .bbclass
+**Extension: .bbclass**
 
 They are usually placed in classes directory inside the meta* directory
 
@@ -119,68 +105,16 @@ module.bbclass - Provides support for building out-of-tree Linux Kernel Modules
 
 
 
-Layers
---------
+## 4- Layers
 
-A collection of related recipes.
+A collection of related recipes **or** Layers are recipe containers (folders)
 
-or
-
-Layers are recipe containers (folders)
-
-Typical naming convention: meta-<layername>
+**Typical naming convention:** meta-<layername>
 
 Poky has the following layers:
 
-meta, meta-poky, meta-selftest, meta-skeleton, meta-yocto-bsp
+`meta`, `meta-poky`, `meta-selftest`, `meta-skeleton`, `meta-yocto-bsp`
 
-Why Layers
------------
-
- Layers provide a mechanism to isolate meta data according to functionality, for instance BSPs, distribution configuration, etc.
-
-You could have a BSP layer, a GUI layer, a distro configuration, middleware, or an application
-
-Putting your entire build into one layer limits and complicates future customization and reuse. 
-
-Example: meta-poky          -- Distro metadata
-         meta-yocto-bsp     -- BSP    metadata
-
-Layers allow to easily to add entire sets of meta data and/or replace sets with other sets.
-meta-poky, is itself a layer applied on top of the OE-Core metadata layer, meta
-
-
-Layers
-----------
-
-Which layers are used by Poky build system?
--------------------------------------------
-
-BBLAYERS variable present in build/conf/bblayers.conf file list the layers Bitbake tries to find
-
-If bblayers.conf is not present when you start the build, the OpenEmbedded build system creates it from bblayers.conf.sample when you source the oe-init-build-env script
-
-Command to find out which layers are present
-----------------------------------------------
-
-$ bitbake-layers show-layers
-
-Note: You can include any number of available layers from the Yocto Project 
-
-Where to get other layers
---------------------------
-
-https://layers.openembedded.org/layerindex/branch/master/layers/
-
-
-Yocto Project Compatible Layers
---------------------------------
-
-https://www.yoctoproject.org/software-overview/layers/
-
-These layers are tested and are fully compatible with yocto project.
-
-OpenEmbedded layer index contains more layers but the content is less universally validated
 
 Image
 -----------
@@ -201,45 +135,39 @@ Command to check the list of available image recipes
 $ ls meta*/recipes*/images/*.bb
 
 
-
 Packages
 -------------
 
-Non-Yocto: Any wrapped or boxed object or group of objects.
-
-Yocto: A package is a binary file with name *.rpm, *.deb, or *.ipkg
+A package is a binary file with name *.rpm, *.deb, or *.ipkg
 
 A single recipe produces many packages. All packages that a recipe generated are listed in the recipe variable
 
-
-$ vi  meta/recipes-multimedia/libtiff/tiff_4.0.10.bb
-PACKAGES =+ "tiffxx tiff-utils"
 
 
 Poky source tree
 ------------------
 
-bitbake		-	Holds all Python scripts used by the bitbake command
-			bitbake/bin is placed into the PATH environmental variable so bitbake can be found
-
-documentation   -       All documentation sources for the Yocto Project documentation
-			Can be used to generate nice PDFs
-
-meta		-	Contains the oe-core metadata
+`bitbake`		-	Holds all Python scripts used by the bitbake command bitbake/bin is placed into the PATH environmental variable
 			
-meta-poky	-	Holds the configuration for the Poky reference distribution
-			local.conf.sample, bblayers.conf.sample are present here
 
-meta-skeleton	- 	Contains template recipes for BSP and kernel development
+`documentation`    	-       All documentation sources for the Yocto Project documentation Can be used to generate nice PDFs
+			
+
+`meta`			-	Contains the oe-core metadata
+			
+`meta-poky`		-	Holds the configuration for the Poky reference distribution local.conf.sample, bblayers.conf.sample are present here
+			
+
+`meta-skeleton`		- 	Contains template recipes for BSP and kernel development
 
 
-meta-yocto-bsp  -	Maintains several BSPs such as the Beaglebone, EdgeRouter, 
-			and generic versions of both 32-bit and 64-bit IA machines.
+`meta-yocto-bsp` 	-	Maintains several BSPs such as the Beaglebone, EdgeRouter, and generic versions of both 32-bit and 64-bit IA machines.
+			
 
-scripts		-	Contains scripts used to set up the environment, development tools,
-			and tools to flash the generated images on the target.
+`scripts`		-	Contains scripts used to set up the environment, development tools,and tools to flash the generated images on the target.
+			
 
-LICENSE		-	The license under which Poky is distributed (a mix of GPLv2 and MIT).
+`LICENSE`		-	The license under which Poky is distributed (a mix of GPLv2 and MIT).
 
 
 conf
@@ -296,17 +224,13 @@ E.g: BBLAYERS = "\
                                  "
 This example enables four layers, one of which is a custom user defined layer named "meta-mylayer"
 
-
 Other directories
 -----------------
 
-downloads	-	downloaded upstream tarballs/git repositories of the recipes used in the build
+`downloads`	-	downloaded upstream tarballs/git repositories of the recipes used in the build
 
-sstate-cache	-	shared state cache
+`sstate-cache`	-	shared state cache
 
-tmp		-	Holds all the build system output
-
-			tmp/deploy/images/machine - Images are present here
+`tmp`		-	Holds all the build system output, tmp/deploy/images/machine - Images are present here
 			
-cache		-	cache used by the bitbake's parser		
-
+`cache`		-	cache used by the bitbake's parser		
