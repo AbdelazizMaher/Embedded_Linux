@@ -40,8 +40,6 @@ Difference between Yocto and Poky is Yocto refers to the organization `( like on
  
 ### 1- Metadata 
 
-**Yocto World:**
-
 - Metadata refers to the build instructions
 - Commands and data used to indicate what versions of software are used
 - Where they are obtained from
@@ -57,29 +55,27 @@ Difference between Yocto and Poky is Yocto refers to the organization `( like on
 	
 ### 2- Recipes
 
-A recipe is a set of instructions that is read and processed by the bitbake
+A recipe is a set of instructions that is read and processed by the bitbake ( a software component)
 
 **Extension of Recipe: .bb**
 
 A recipe describes:
-    where you get source code
-    which patches to apply
-    Configuration options
-    Compile options (library dependencies)
-    Install
-    License
-
-a software component
+- where you get source code
+- which patches to apply
+- Configuration options
+- Compile options (library dependencies)
+- Install
+- License
 
 
 ### 3- Configuration Files
 
-Files which hold
+They tell the build system what to build and put into the image to support a particular platform
+
+Files which hold:
 - global definition of variables
 - user defined variables and
 - hardware configuration information
-
-They tell the build system what to build and put into the image to support a particular platform
 
 **Extension: .conf**
 	
@@ -88,21 +84,23 @@ They tell the build system what to build and put into the image to support a par
 
 Class files are used to abstract common functionality and share it amongst multiple recipe (.bb) files
 
-To use a class file, you simply make sure the recipe inherits the class
+- To use a class file, you simply make sure the recipe inherits the class
+  
+- They are usually placed in classes directory inside the meta* directory
 
+
+```bash
 Eg. inherit classname
+```
 
 **Extension: .bbclass**
-
-They are usually placed in classes directory inside the meta* directory
 
 Example of classes
 -------------------
 
-cmake.bbclass - Handles cmake in recipes
-kernel.bbclass - Handles building kernels. Contains code to build all kernel trees
-module.bbclass - Provides support for building out-of-tree Linux Kernel Modules
-
+`cmake.bbclass` - Handles cmake in recipes
+`kernel.bbclass` - Handles building kernels. Contains code to build all kernel trees
+`module.bbclass` - Provides support for building out-of-tree Linux Kernel Modules
 
 
 ## 4- Layers
@@ -119,21 +117,19 @@ Poky has the following layers:
 Image
 -----------
 
-An image is the top level recipe, it has a description, a license and inherits the core-image class
+- An image is the top level recipe, it has a description, a license and inherits the core-image class
 
-It is used alongside the machine definition
+- It is used alongside the machine definition,where a machine describes the hardware used and its capabilities
 
-machine describes the hardware used and its capabilities
+**Image** is architecture agnostic and defines how the root filesystem is built, with what packages.
 
-image is architecture agnostic and defines how the root filesystem is built, with what packages.
 
-By default, several images are provided in Poky
 
 Command to check the list of available image recipes
 ----------------------------------------------------
-
-$ ls meta*/recipes*/images/*.bb
-
+```bash
+ls meta*/recipes*/images/*.bb
+```
 
 Packages
 -------------
@@ -182,25 +178,30 @@ Inside this build folder, it will create "conf" folder which contains two files:
 local.conf
 -------------
 
-Configures almost every aspect of the build system
-Contains local user settings
+Configures almost every aspect of the build system and Contains local user settings
 
-MACHINE: The machine the target is built for
-	Eg: MACHINE = "qemux86-64"
 
-DL_DIR: Where to place downloads
-	During a first build the system will download many different source code tarballs,from various 
-	upstream projects.These are all stored in DL_DIR
-	The default is a downloads directory under TOPDIR which is the build directory
+`MACHINE`: The machine the target is built for
 
-TMP_DIR:  Where to place the build output
-	  This option specifies where the bulk of the building work should be done and
-	  where BitBake should place its temporary files(source extraction, compilation) and output
+```bash
+Eg: MACHINE = "qemux86-64"
+```
+ 
+`DL_DIR`: Where to place downloads
+
+During a first build the system will download many different source code tarballs,from various 
+upstream projects.These are all stored in DL_DIR
+The default is a downloads directory under TOPDIR which is the build directory
+
+`TMP_DIR`:  Where to place the build output
+
+This option specifies where the bulk of the building work should be done and
+where BitBake should place its temporary files(source extraction, compilation) and output
 
 Important Point:
 ----------------
 
-local.conf file is a very convenient way to override several default configurations over all the Yocto Project's tools.
+`local.conf` file is a very convenient way to override several default configurations over all the Yocto Project's tools.
 
 Essentially, we can change or set any variable, for example, add additional packages to an image file
 
@@ -216,12 +217,14 @@ By default, the layers listed in this file include layers minimally needed by th
 
 However, you must manually add any custom layers you have created
 
-E.g: BBLAYERS = "\
-                                  /home/linuxtrainer/poky/meta \
-                                 /home/linuxtrainer/poky/meta-poky \
-                                 /home/linuxtrainer/poky/meta-yocto-bsp \
-                                 /home/linuxtrainer/poky/meta-mylayer \
-                                 "
+```bash
+BBLAYERS ?= " \
+  /home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/poky/meta \
+  /home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/poky/meta-poky \
+  /home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/poky/meta-yocto-bsp \
+  "
+```
+                               
 This example enables four layers, one of which is a custom user defined layer named "meta-mylayer"
 
 Other directories
