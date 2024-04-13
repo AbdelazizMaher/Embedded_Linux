@@ -1,0 +1,7 @@
+def do_clean(d):
+
+    import os
+    os.remove("/home/abdelaziz/hello/tmp")
+
+do_clean(d)
+

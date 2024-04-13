@@ -1,0 +1,50 @@
+11834 10:28:03.446429 --- Starting bitbake server pid 11834 at 2024-03-30 10:28:03.446391 ---
+11834 10:28:03.447589 Started bitbake server pid 11834
+11834 10:28:03.447838 Entering server connection loop
+11834 10:28:03.447873 Lockfile is: /home/abdelaziz/hello/classes/bitbake.lock
+Socket is /home/abdelaziz/hello/classes/bitbake.sock (True)
+11834 10:28:03.448370 Accepting [<socket.socket fd=6, family=AddressFamily.AF_UNIX, type=SocketKind.SOCK_STREAM, proto=0, laddr=bitbake.sock>] ([])
+11834 10:28:03.449231 Processing Client
+11834 10:28:03.449288 Connecting Client
+11834 10:28:03.449701 Running command ['setFeatures', [2, 1]]
+11834 10:28:03.449735 Sending reply (None, None)
+11834 10:28:03.449779 Command Completed (socket: True)
+11834 10:28:03.450665 Running command ['updateConfig', {'halt': True, 'force': False, 'invalidate_stamp': None, 'dry_run': False, 'dump_signatures': [], 'extra_assume_provided': [], 'profile': False, 'prefile': [], 'postfile': [], 'server_timeout': None, 'nosetscene': False, 'setsceneonly': False, 'skipsetscene': False, 'runall': [], 'runonly': None, 'writeeventlog': None, 'build_verbose_shell': False, 'build_verbose_stdout': False, 'default_loglevel': 20, 'debug_domains': {}}, {'SHELL': '/bin/bash', 'PWD': '/home/abdelaziz/hello/classes', 'LOGNAME': 'abdelaziz', 'HOME': '/home/abdelaziz', 'BBPATH': '/home/abdelaziz/hello/', 'USER': 'abdelaziz', 'LC_ALL': 'en_US.UTF-8', 'PATH': '/home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/BItBake/bitbake/bin:/home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/BItBake/bitbake:/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'ROS_VERSION': '2', 'SESSION_MANAGER': 'local/IdeaPad-Gaming:@/tmp/.ICE-unix/2404,unix/IdeaPad-Gaming:/tmp/.ICE-unix/2404', 'QT_ACCESSIBILITY': '1', 'COLORTERM': 'truecolor', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_MENU_PREFIX': 'gnome-', 'TERM_PROGRAM_VERSION': '1.86.2', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_PYTHON_VERSION': '3', 'LC_ADDRESS': 'ar_EG.UTF-8', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'LC_NAME': 'ar_EG.UTF-8', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'XMODIFIERS': '@im=ibus', 'DESKTOP_SESSION': 'ubuntu', 'LC_MONETARY': 'ar_EG.UTF-8', 'SSH_AGENT_PID': '2330', 'GTK_MODULES': 'gail:atk-bridge', 'DBUS_STARTER_BUS_TYPE': 'session', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XDG_SESSION_TYPE': 'x11', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'VSCODE_GIT_ASKPASS_NODE': '/usr/share/code/code', 'WINDOWPATH': '2', 'USERNAME': 'abdelaziz', 'IM_CONFIG_PHASE': '1', 'LC_PAPER': 'ar_EG.UTF-8', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'XDG_CURRENT_DESKTOP': 'Unity', 'VTE_VERSION': '6003', 'AMENT_PREFIX_PATH': '/opt/ros/foxy', 'GIT_ASKPASS': '/usr/share/code/resources/app/extensions/git/dist/askpass.sh', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/e9ae7056_5379_4db4_98cf_f7570869dcc1', 'INVOCATION_ID': 'd427fe45a4234c2498c3bce66087de16', 'MANAGERPID': '2170', 'CHROME_DESKTOP': 'code-url-handler.desktop', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'XDG_SESSION_CLASS': 'user', 'PYTHONPATH': '/opt/ros/foxy/lib/python3.8/site-packages', 'LC_IDENTIFICATION': 'ar_EG.UTF-8', 'TERM': 'xterm-256color', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-7cb1c1ad07.sock', 'GNOME_TERMINAL_SERVICE': ':1.96', 'DISPLAY': ':1', 'SHLVL': '2', 'LC_TELEPHONE': 'ar_EG.UTF-8', 'QT_IM_MODULE': 'ibus', 'LC_MEASUREMENT': 'ar_EG.UTF-8', 'DBUS_STARTER_ADDRESS': 'unix:path=/run/user/1000/bus,guid=06cfff46323c20a51bacc5016607b3fc', 'LD_LIBRARY_PATH': '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/x86_64-linux-gnu:/opt/ros/foxy/lib', 'XDG_RUNTIME_DIR': '/run/user/1000', 'ROS_LOCALHOST_ONLY': '0', 'LC_TIME': 'ar_EG.UTF-8', 'VSCODE_GIT_ASKPASS_MAIN': '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js', 'JOURNAL_STREAM': '8:63079', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'GDK_BACKEND': 'x11', 'GDMSESSION': 'ubuntu', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus,guid=06cfff46323c20a51bacc5016607b3fc', 'ROS_DISTRO': 'foxy', 'LC_NUMERIC': 'ar_EG.UTF-8', 'OLDPWD': '/home/abdelaziz/hello', 'TERM_PROGRAM': 'vscode', '_': '/home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/BItBake/bitbake/bin/bitbake'}, ['/home/abdelaziz/NTI_WS/Linux_Workspace/YOCTO/BItBake/bitbake/bin/bitbake']]
+11834 10:28:03.455124 Base config valid
+11834 10:28:03.455172 Sending reply (None, None)
+11834 10:28:03.455221 Command Completed (socket: True)
+11834 10:28:03.455377 Running command ['getVariable', 'BBINCLUDELOGS']
+11834 10:28:03.455399 Sending reply (None, None)
+11834 10:28:03.455423 Command Completed (socket: True)
+11834 10:28:03.455493 Running command ['getVariable', 'BBINCLUDELOGS_LINES']
+11834 10:28:03.455506 Sending reply (None, None)
+11834 10:28:03.455527 Command Completed (socket: True)
+11834 10:28:03.455589 Running command ['getSetVariable', 'BB_CONSOLELOG']
+11834 10:28:03.455609 Sending reply (None, None)
+11834 10:28:03.455632 Command Completed (socket: True)
+11834 10:28:03.455687 Running command ['getSetVariable', 'BB_LOGCONFIG']
+11834 10:28:03.455705 Sending reply (None, None)
+11834 10:28:03.455729 Command Completed (socket: True)
+11834 10:28:03.457137 Running command ['getUIHandlerNum']
+11834 10:28:03.457165 Sending reply (1, None)
+11834 10:28:03.457209 Command Completed (socket: True)
+11834 10:28:03.457301 Running command ['setEventMask', 1, 20, {}, ['bb.runqueue.runQueueExitWait', 'bb.event.LogExecTTY', 'logging.LogRecord', 'bb.build.TaskFailed', 'bb.build.TaskBase', 'bb.event.ParseStarted', 'bb.event.ParseProgress', 'bb.event.ParseCompleted', 'bb.event.CacheLoadStarted', 'bb.event.CacheLoadProgress', 'bb.event.CacheLoadCompleted', 'bb.command.CommandFailed', 'bb.command.CommandExit', 'bb.command.CommandCompleted', 'bb.cooker.CookerExit', 'bb.event.MultipleProviders', 'bb.event.NoProvider', 'bb.runqueue.sceneQueueTaskStarted', 'bb.runqueue.runQueueTaskStarted', 'bb.runqueue.runQueueTaskFailed', 'bb.runqueue.sceneQueueTaskFailed', 'bb.event.BuildBase', 'bb.build.TaskStarted', 'bb.build.TaskSucceeded', 'bb.build.TaskFailedSilent', 'bb.build.TaskProgress', 'bb.event.ProcessStarted', 'bb.event.ProcessProgress', 'bb.event.ProcessFinished']]
+11834 10:28:03.457316 Sending reply (True, None)
+11834 10:28:03.457340 Command Completed (socket: True)
+11834 10:28:03.457415 Running command ['getVariable', 'BB_DEFAULT_TASK']
+11834 10:28:03.457458 Sending reply (None, None)
+11834 10:28:03.457554 Command Completed (socket: True)
+11834 10:28:03.457613 Running command ['setConfig', 'cmd', 'build']
+11834 10:28:03.457628 Sending reply (None, None)
+11834 10:28:03.457648 Command Completed (socket: True)
+11834 10:28:03.457701 Running command ['getVariable', 'BBTARGETS']
+11834 10:28:03.457716 Sending reply (None, None)
+11834 10:28:03.457738 Command Completed (socket: True)
+11834 10:28:03.705092 Processing Client
+11834 10:28:03.705230 Disconnecting Client (socket: True)
+11834 10:28:03.705679 No timeout, exiting.
+11834 10:28:03.805958 Exiting (socket: True)
+11834 10:28:03.807734 Exiting as we could obtain the lock
+/usr/lib/python3/dist-packages/html5lib/_trie/_base.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping
+sys:1: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/abdelaziz/hello/classes/bitbake-cookerdaemon.log' mode='a+' encoding='UTF-8'>

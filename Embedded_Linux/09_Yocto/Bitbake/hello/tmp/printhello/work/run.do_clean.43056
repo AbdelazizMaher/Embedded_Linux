@@ -1,0 +1,12 @@
+def do_clean(d):
+
+    import shutil
+    import os
+
+    folder_path = "/home/abdelaziz/hello/tmp"
+
+    if os.path.exists(tmp):
+        shutil.rmtree(tmp)
+
+do_clean(d)
+
