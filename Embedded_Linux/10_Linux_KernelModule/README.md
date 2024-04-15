@@ -36,7 +36,26 @@ Modules can be loaded into the kernel using the `insmod` command or by placing t
 
 Kernel modules can accept parameters that modify their behavior. These parameters can be specified when loading the module using the `insmod` or `modprobe` commands. Module parameters are accessed within the module code and can be used to configure module behavior.
 
+## Static and Dynamic Linux Kernel Modules: In-tree vs Out-of-tree
 
+  - **Static vs Dynamic Modules**
+    - **Static Modules**
+      - Integrated directly into the kernel image during the kernel build process.
+      - Part of the kernel image and always present, consuming memory even if not actively used **( Cannot be loaded or unloaded dynamically)**.
+      - Suitable for essential functionalities that need to be available at all times.
+    - **Dynamic Modules**
+      - Compiled separately from the kernel.
+      - Loaded into the kernel at runtime using utilities like `insmod` or `modprobe` and can be unloaded using `rmmod`..
+      - Provide flexibility by allowing kernel extensions to be loaded and unloaded as needed, conserving memory when not in use.
+  - **In-tree vs Out-of-tree Modules**
+    - **In-tree Modules**
+      - Kernel modules that are part of the official Linux kernel source tree.
+      - Maintained and distributed along with the kernel source code.
+      - Subject to the same development and release cycle as the kernel.
+    - **Out-of-tree Modules**
+      - Kernel modules developed separately from the main Linux kernel source tree.
+      - Not part of the official kernel source code.
+      - Typically developed by third parties or as independent projects.
 
 
 
