@@ -5,10 +5,10 @@
 
 ## Advantages of Kernel Modules
 
-- **Dynamic Loading**: Modules can be loaded and unloaded from the kernel dynamically, allowing for flexibility and resource efficiency.
-- **Efficient Memory Usage**: Modules can be loaded only when needed, conserving memory resources.
-- **Easy Maintenance**: Modules can be updated or removed without rebooting the system, simplifying maintenance tasks.
-- **Modular Design**: The modular design of the Linux kernel allows for easier development and testing of new features.
+- **`Dynamic Loading`**: Modules can be loaded and unloaded from the kernel dynamically, allowing for flexibility and resource efficiency.
+- **`Efficient Memory Usage`**: Modules can be loaded only when needed, conserving memory resources.
+- **`Easy Maintenance`**: Modules can be updated or removed without rebooting the system, simplifying maintenance tasks.
+- **`Modular Design`**: The modular design of the Linux kernel allows for easier development and testing of new features.
 
 ## Development of Kernel Modules
 
@@ -27,11 +27,11 @@ Modules can be loaded into the kernel using the `insmod` command or by placing t
 
 ## Lifecycle of Kernel Modules
 
-1. **Initialization**: Modules initialize themselves when they are loaded into the kernel. This involves allocating resources, registering device drivers, and setting up any necessary data structures.
+1. **`Initialization`**: Modules initialize themselves when they are loaded into the kernel. This involves allocating resources, registering device drivers, and setting up any necessary data structures.
 
-2. **Functionality**: Once initialized, modules provide their intended functionality to the kernel. For example, a device driver module may handle communication with a hardware device.
+2. **`Functionality`**: Once initialized, modules provide their intended functionality to the kernel. For example, a device driver module may handle communication with a hardware device.
 
-3. **Cleanup**: When a module is unloaded from the kernel, it must clean up any resources it allocated during initialization and unregister any device drivers it registered.
+3. **`Cleanup`**: When a module is unloaded from the kernel, it must clean up any resources it allocated during initialization and unregister any device drivers it registered.
 
 ## Module Parameters
 
