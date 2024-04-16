@@ -1,10 +1,11 @@
 obj-m = myDriver.o
 
-BDIR = /lib/modules/5.15.0-101-generic/build
+HOST_BDIR = /lib/modules/$(shell uname -r)/build
+
 PWD := $(shell pwd)
 
 all:
-	make -C ${BDIR} M=${PWD} modules
+	make -C ${HOST_BDIR} M=${PWD} modules
 	
 clean:
-	make -C ${BDIR} M=${PWD} clean	
+	make -C ${HOST_BDIR} M=${PWD} clean	
