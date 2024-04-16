@@ -18,7 +18,8 @@ Writing kernel modules requires understanding of the Linux kernel's internals, i
 
 ### Compiling Kernel Modules
 
-Kernel modules are compiled separately from the kernel itself. Developers need the appropriate kernel headers and build tools installed on their system to compile modules. The `Makefile` is commonly used to automate the compilation process.
+Kernel modules are compiled separately from the kernel itself. Developers need the appropriate kernel headers and build tools installed on their system to compile modules. The `Makefile` is commonly used to automate the compilation process.Modules are built using `kbuild` which is the build system used by the Linux kernel, Doesn't matter whether it is a static module or dynamic module.
+
 
 ### Loading and Unloading Modules
 
@@ -57,6 +58,12 @@ Kernel modules can accept parameters that modify their behavior. These parameter
       - Not part of the official kernel source code.
       - Typically developed by third parties or as independent projects.
 
+**Note:** 
+- Loading Out of tree module `taints the kernel`.The kernel issues a warning saying **Out of tree module has been loaded**,This is just a `warning` from the kernel and we can safely ignore this warning
 
+- **Out of tree modules** must use `kbuild` to stay compatible with changes in the build infrastructure and to pick up right flags to GCC.You must have a **prebuilt kernel source available** that contains the configuration and header files used in the build **The reason is,** modules are linked against object files found in the kernel source tree.**This ensures that** as the developer changes the kernel configuration, his custom driver is automatically rebuilt with the correct kernel configuration.
 
+There are two ways to obtain a prebuilt kernel version:
 
+1. Download kernel from your distributor and build it by yourself
+2. install the Linux-headers of the target Linux kernel
