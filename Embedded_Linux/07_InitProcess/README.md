@@ -43,12 +43,12 @@ mount -t sysfs sys /sys
 
 ### 2. SystemV Init
 
-SystemV init is one of the traditional init systems found in Unix-like operating systems. It sequentially starts services defined in a series of shell scripts located in /etc/rc.d directories.
+SystemV init is one of the traditional init systems found in Unix-like operating systems. It sequentially starts services defined in a series of shell scripts located in `/etc/rc.d` directories.
 
 #### Features of SystemV Init:
 
-- Sequential startup of services defined in runlevel-specific directories.
-- Init scripts typically follow a naming convention (e.g., S##service for start and K##service for stop).
+- Sequential startup of services defined in runlevel-specific directories. ( `Inittab` runs the rcS script at bootup )
+- Init scripts under `init.d` typically follow a naming convention (e.g., S##service for start and K##service for stop).
 - Supports runlevels for defining system states.
 
 Configuration Example:
@@ -70,6 +70,9 @@ echo "Initializing SystemV Init..."
 /etc/rc.d/rc.multi
 /etc/rc.d/rc.local
 ```
+####  Inittab
+
+**System-V init** program starts by reading `/etc/inittab`
 
 ### 3. systemd
 
