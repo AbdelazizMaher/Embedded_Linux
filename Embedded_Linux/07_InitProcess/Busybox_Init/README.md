@@ -68,5 +68,29 @@ We need to add two scripts:
 	::shutdown:/etc/init.d/rcS 5
   ```
 
+### inittab syntax
+  ```sh
+id:runlevels:action:process
+```
+| Field      | Description                                                                                     |
+|------------|-------------------------------------------------------------------------------------------------|
+| id         | An arbitrary identifier for the entry.                                                         |
+| runlevels  | Specifies the runlevels in which the entry is active. It can be represented as a single level (0-6) or a combination of levels. "S" denotes system startup. |
+| action     | Specifies the action to be taken when conditions defined by id and runlevels are met. Possible actions include: `initdefault`, `respawn`, `wait`, `once`, `ctrlaltdel`, among others. |
+| process    | Specifies the command or script to be executed when the conditions defined by id and runlevels are met. This could be an absolute path to an executable program or a script. |
+
+
+ **`action:`**
+   - **`initdefault`**: Specifies the default runlevel to be entered after system boot.
+   - **`respawn`**: Restarts the specified process if it terminates.
+   - **`wait`**: Waits for the specified process to terminate before proceeding.
+   - **`once`**: Executes the specified process once and then removes the entry.
+   - **`ctrlaltdel`**: Defines the action to be taken when the Ctrl+Alt+Delete key combination is pressed.
+   - **`powerfail`**: Specifies the action to be taken when a power failure occurs.
+   - **`sysinit`**: Specifies commands to be executed during system initialization.
+   - **`bootwait`**: Similar to wait, but executed at boot time.
+   - **`powerwait`**: Similar to wait, but executed when a power failure occurs.
+   - **`off`**: Disables the entry.
+
 
 
