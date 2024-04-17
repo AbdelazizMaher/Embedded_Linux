@@ -29,14 +29,6 @@ Difference between Yocto and Poky is Yocto refers to the organization `( like on
 | Poky = Bitbake + Metadata |
 | :-----------------------: |
 
-**Metadata is collection of:**
-
-- Configuration files (.conf)
-- Recipes (.bb and .bbappend)
-- Classes (.bbclass)
-- Includes (.inc)	
-	
-
  
 ### 1- Metadata 
 
