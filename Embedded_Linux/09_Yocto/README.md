@@ -24,16 +24,18 @@ To understand the outcome provided by the Yocto Project, we can use the analogy 
 
 ### Prerequisites
 
-1. 50 Gbytes of free disk space
+1. 100 Gbytes of free disk space
 
 2. Runs a supported Linux distribution (i.e. recent releases of Fedora, openSUSE, CentOS, Debian, or Ubuntu). 
 
 3. 
 	Git 1.8.3.1 or greater
 
-	tar 1.27 or greater
+	tar 1.28 or greater
 
-	Python 3.4.0 or greater.
+	Python 3.8.0 or greater
+
+	GNU make 4.0 or greater
 
 #### Packages and package installation vary depending on your development system.
 
@@ -124,6 +126,7 @@ The build process writes images out to the Build Directory inside the tmp/deploy
    
 		Root filesystems for the target device (e.g. *.ext3 or *.bz2 files).
 		The `**IMAGE_FSTYPES**` variable determines the root filesystem image type
+		Image formats instructions are delivered in Poky: meta/classes/image_types.bbclass
 		
 		bitbake -e core-image-minimal | grep ^IMAGE_FSTYPES=
    
