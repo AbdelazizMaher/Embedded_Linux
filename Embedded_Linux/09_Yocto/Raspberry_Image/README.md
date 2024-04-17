@@ -82,10 +82,16 @@ ENABLE_UART = "1"
 Images are present in tmp/deploy/images/raspberrypi4-64
 
 ```bash
+#  list information about all available block devices
 lsblk
-
+# in local.conf add IMAGE_FSTYPES:append =" rpi-sdimg"
 sudo dd if=rpi-hwup-image-raspberrypi4-64.rpi-sdimg of=/dev/sdb bs=4096 && sync
 ```
+> :exclamation: If you have a particular layout on your storage (for example bootloader location on an SD card), you may want to create your own image type
+
+> This is done through a class that inherits from `image_types`,It has to define a function named `IMAGE_CMD_<type>`
+
+**`Example:`** sdcard_image-rpi.bbclass in `meta-raspberrypi/classes` 
 
 ### Remotely access raspberry pi4
 
