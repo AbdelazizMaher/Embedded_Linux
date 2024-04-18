@@ -1,38 +1,8 @@
-Recipes
-------------
-
-Recipes are fundamental components in the Yocto Project environment.
-
-A Yocto/OpenEmbedded recipe is a text file with file extension .bb
-
-Each software component built by the OpenEmbedded build system requires a recipe to define the component
-
-A recipe contains information about single piece of software.
-
-What information is present in a recipe?
-----------------------------------------
-
-Information such as:
-
-        Location from which to download the unaltered source
-        any patches to be applied to that source (if needed)
-        special configuration options to apply
-        how to compile the source files and
-        how to package the compiled output
-
-Poky includes several classes that abstract the process for the most common development tools as projects based on `Autotools`, `CMake`, and `QMake`.
-
-
-Recipe File Format
----------------------
-
-File Format: <base_name>_<version>.bb
-
-> Note: Use lower-cased characters and do not include the reserved suffixes `-native`, `-cross`, `-initial`, or `-dev`
+# Writing a Recipe
 
 
 
-Step 1: Create a file `hello.c` with the your content:
+### Step 1: Create a file `hello.c` with the your content:
 
 ```c
 #include <stdio.h>
@@ -47,26 +17,29 @@ int main()
 }	
 ```
 
-Step 2: Create a folder in the layer recipes-example 'hello'
+### Step 2: Create a folder in the layer recipes-example 'hello'
 
 ```bash
 mkdir -p recipes-examples/hello
 ```
 
-Step 3: Create 'files' folder inside the 'hello' folder and copy hello.c inside this folder
+### Step 3: Create 'files' folder inside the 'hello' folder and copy hello.c inside this folder
 
 ```bash
 # Copy the hello.c into the below location
 mkdir -p recipes-examples/hello/files
 ```
 
-Step 4: Create a file called 'hello_0.1.bb' with the following content:
+### Step 4: Create a file called 'hello_0.1.bb' with the following content:
 
 ```bash
 SUMMARY = "Simple print hello recipe"
 DESCRIPTION = "Recipe created by abdelaziz"
 
+# Your recipe needs to have both the LICENSE and LIC_FILES_CHKSUM variables
+# This variable specifies the license for the software.
 LICENSE = "MIT"
+# The OpenEmbedded build system uses this variable to make sure the license text has not changed
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 SRC_URI = "file://hello.c"
@@ -86,23 +59,55 @@ do_install() {
 
 > **`Notes`** 
 
->> `WORKDIR`, hello.c gets copied to this location 
+>> `Recipe File Format: `<base_name>_<version>.bb`
+>>> Use lower-cased characters and do not include the reserved suffixes `-native`, `-cross`, `-initial`, or `-dev`
+
+> `For standard licenses`, use the names of the files in meta/files/common-licenses/
+
 >> `install keyword` not only copies files but also changes its ownership and permissions and optionally removes debugging symbols from executables.It combines cp with chown, chmod and strip
 
 
-Step 5: Execute the recipe
+### Step 5: Execute the recipe
 
 ```bash 
 bitbake myhello
 ```
 
+### Recipe Explanation
 
+The most relevant tasks that will be executed when calling bitbake hello are the following:
 
-Yocto/OpenEmbedded's build tool bitbake parses a recipe and generates list of tasks that it can execute to perform the build steps
+#### 1. do_fetch: 
 
-$ bitbake basename
+In this case, since the specified `SRC_URI` variable points to a `local file`, BitBake will simply copy the file in the recipe `WORKDIR`. 
+This is why the `S` environment variable `(which represents the source code location)` is set to `WORKDIR`.
 
-The most important tasks are
+	
+#### 2. do_compile: 
+
+when executing this task, BB will invoke the `C cross-compiler` for compiling the `hello.c` source file. 
+> :white_check_mark: The results of the compilation will be in the folder pointed by the `B` environment variable `(that, in most of the cases, is the same as the S folder)`.
+
+#### 3. do_install: 
+
+This task specifies where the hello binary should be installed into the `rootfs`. 
+It must be noticed that this installation will only happen within a `temporary rootfs folder within the recipe WORKDIR` (pointed by the variable `D`)
+
+#### 4. do_package: 
+
+In this phase the file installed in the directory `D` will be packaged in a package named `hello`. 
+This package will be used later from BitBake when eventually `building a rootfs image containing the hello recipe` package
+
+> `packages`: The extracted contents of packages are stored here
+ 
+>`packages-split`: The contents of packages, extracted and split, are stored here. This has a sub-directory for each package
+	
+
+### Tasks
+
+Yocto/OpenEmbedded's build tool `bitbake` parses a recipe and generates list of tasks that it can execute to perform the build steps
+
+**The most important tasks are:**
 
 | Task                 | Description                                                                     |
 |----------------------|---------------------------------------------------------------------------------|
@@ -123,212 +128,88 @@ The most important tasks are
 >> The above task list is in the correct `dependency order`. They are executed from `top to bottom`.
 
 
-You can use the `-c` argument to execute the `specific task` of a recipe.
+#### You can use the `-c` argument to execute the `specific task` of a recipe.
 
 ```bash
 bitbake -c compile <recipe>
 ```
 
-To list all tasks of a particular recipe:
+#### To list all tasks of a particular recipe:
 
 ```bash
 bitbake <recipe name> -c listtasks
 ```
 
+### Tasks Explanation
 
-Stage 1: Fetching Code (do_fetch)
-----------------------------------
+> :exclamation: **`Note`** classes/base.bbclass contains definitions for standard basic tasks such as `fetching`, `unpacking`, `configuring` (empty by default), `compiling` (runs any Makefile present), `installing` (empty by default) and `packaging` (empty by default)
 
-The first thing your recipe must do is specify how to fetch the source files.
+#### Stage 1: Fetching Code (do_fetch)
 
-Fetching is controlled mainly through the SRC_URI variable
+- The first thing your recipe must do is specify how to fetch the source files.
 
-Your recipe must have a SRC_URI variable that points to where the source is located.
+> :grey_exclamation: `Fetching` is controlled mainly through the `SRC_URI` variable
 
-The SRC_URI variable in your recipe must define each unique location for your source files.
+- Your recipe must have a `SRC_URI` variable that points to where the source is located.
 
-Bitbake supports fetching source code from git, svn, https, ftp, etc
+- The `SRC_URI` variable in your recipe must define each `unique location` for your source files.
 
-URI scheme syntax: scheme://url;param1;param2
+- Bitbake supports fetching source code from `git`, `svn`, `https`, `ftp`, etc
 
-scheme can describe a local file using file:// or remote locations with https://, git://, svn://, hg://, ftp://
+> URI scheme syntax: scheme://url;param1;param2
 
-By default, sources are fetched in $BUILDDIR/downloads
+- Scheme can describe a local file using `file://` or remote locations with `https://, git://, svn://, hg://, ftp://`
 
+> By default, sources are fetched in $BUILDDIR/downloads
 
 
-Stage 2: Unpacking (do_unpack)
--------------------------------
 
-All local files found in SRC_URI are copied into the recipe’s working directory, in $BUILDDIR/tmp/work/
+#### Stage 2: Unpacking (do_unpack)
 
-When extracting a tarball,BitBake expects to find the extracted files in a directory named <application>-<version>. This is controlled by the S variable.
+- All local files found in `SRC_URI` are copied into the recipe’s working directory, in `$BUILDDIR/tmp/work/`
 
-If the tarball follows the above format, then you need not define S variable
+> :exclamation: If the directory has another name, you must explicitly define S
 
-Eg. SRC_URI = "https://busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball
+- If you are fetching from SCM like `git or SVN`, or your file is local to your machine, you need to define `S`
 
-If the directory has another name, you must explicitly define S
+- If the scheme is `git`, `S = ${WORKDIR}/git`
+  
 
-If you are fetching from SCM like git or SVN, or your file is local to your machine, you need to define S
+#### Stage 3: Patching Code (do_patch)
 
-If the scheme is git, S = ${WORKDIR}/git
+- Sometimes it is necessary to patch code after it has been fetched.
 
-Stage 3: Patching Code (do_patch)
----------------------------------
+- Any files mentioned in `SRC_URI` whose names end in `.patch or .diff` or compressed versions of these suffixes (e.g. diff.gz) are treated as `patches`
 
-Sometimes it is necessary to patch code after it has been fetched.
+> :white_check_mark: The do_patch task automatically applies these patches.
 
-Any files mentioned in SRC_URI whose names end in .patch or .diff or compressed versions of these suffixes (e.g. diff.gz) are treated as patches
+- The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off).
+ 
 
-The do_patch task automatically applies these patches.
+####  Stage 4: Configuration (do_configure)
 
-The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off).
+- Most software provides some means of `setting build-time configuration` options before compilation
 
-If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the SRC_URI entry for the patch
+> :grey_exclamation: Typically, setting these options is accomplished by `running a configure script` with options, or by modifying a build configuration file
 
 
+####  Stage 5: Compilation (do_compile)
 
-Stage 3: Patching Code (do_patch)
----------------------------------
+- do_compile task happens after `source is fetched, unpacked, and configured`.
+  
 
-Sometimes it is necessary to patch code after it has been fetched.
+#### Stage 6: Installation (do_install)
 
-Any files mentioned in SRC_URI whose names end in .patch or .diff or compressed versions of these suffixes (e.g. diff.gz) are treated as patches
+- After compilation completes, BitBake executes the do_install task
 
-The do_patch task automatically applies these patches.
+- During do_install, the task copies the `built files along with their hierarchy` to locations that would `mirror their locations on the target` device.
+  
 
-The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off).
+#### Stage 7: Packaging (do_package)
 
-If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the SRC_URI entry for the patch
+- The do_package task splits the files produced by the recipe into logical components.
 
+> :grey_exclamation: The do_package task ensures that files are split up and packaged correctly.
 
-Stage 3: Patching Code (do_patch)
----------------------------------
 
-Sometimes it is necessary to patch code after it has been fetched.
 
-Any files mentioned in SRC_URI whose names end in .patch or .diff or compressed versions of these suffixes (e.g. diff.gz) are treated as patches
-
-The do_patch task automatically applies these patches.
-
-The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off).
-
-If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the SRC_URI entry for the patch
-
-
-Stage 5: Compilation (do_compile)
----------------------------------
-
-do_compile task happens after source is fetched, unpacked, and configured.
-
-Stage 6: Installation (do_install)
-------------------------------------
-
-After compilation completes, BitBake executes the do_install task
-
-During do_install, the task copies the built files along with their hierarchy to locations that would mirror their locations on the target device.
-
-Stage 7: Packaging (do_package)
---------------------------------
-
-The do_package task splits the files produced by the recipe into logical components.
-
-Even software that produces a single binary might still have debug symbols, documentation, and other logical components that should be split out.
-
-The do_package task ensures that files are split up and packaged correctly.
-
-
-
-
-
-WORKDIR
---------------
-
-The location of the work directory in which the OpenEmbedded build system builds a recipe.
-
-This directory is located within the TMPDIR directory structure and is specific to the recipe being built and the system for which it is being built.
-
-The WORKDIR directory is defined as follows:
-
-${TMPDIR}/work/${MULTIMACH_TARGET_SYS}/${PN}/${EXTENDPE}${PV}-${PR}
-
-TMPDIR: The top-level build output directory
-MULTIMACH_TARGET_SYS: The target system identifier
-PN: The recipe name
-EXTENDPE: Mostly blank
-PV: The recipe version
-PR: The recipe revision
-
-
-
-OpenEmbedded Variables
-----------------------
-
-S : Contains the unpacked source files for a given recipe
-
-D : The destination directory (root directory of where the files are installed, before creating the image)
-
-WORKDIR: The location where the OpenEmbedded build system builds a recipe (i.e. does the work to create the package).
-
-PN : The name of the recipe used to build the package
-
-PV : The version of the recipe used to build the package
-
-PR : The revision of the recipe used to build the package.
-
-Recipe Explanation
------------------------
-The most relevant tasks that will be executed when calling bitbake myhello are the following:
-
-$ bitbake -c cleanall myhello
-
-1. do_fetch: 
-	in this case, since the specified SRC_URI variable points to a local file, BitBake will simply copy the file in the recipe WORKDIR. 
-	This is why the S environment variable (which represents the source code location) is set to WORKDIR.
-
-$ bitbake -c fetch myhello
-$ bitbake -c unpack myhello
-$ bitbake -c configure myhello
-	
-What is sysroot?
----------------
-contain needed headers and libraries for generating binaries that run on the target architecture
-
-recipe-sysroot-native:
-	includes the build dependencies used in the host system during the build process.
-	It is critical to the cross-compilation process because it encompasses the compiler, linker, build script tools, and more,
-
-recipe-sysroot:
-	the libraries and headers used in the target code
-
-2. do_compile: 
-	when executing this task, BB will invoke the C cross-compiler for compiling the myhello.c source file. 
-	The results of the compilation will be in the folder pointed by the B environment variable (that, in most of the cases, is the same as the S folder).
-
-3. do_install: 
-	this task specifies where the helloworld binary should be installed into the rootfs. 
-	It must be noticed that this installation will only happen within a temporary rootfs folder within the recipe WORKDIR (pointed by the variable D)
-
-	image: This contains the files installed by the recipe (pointed to D variable).
-
-4. do_package: 
-	in this phase the file installed in the directory D will be packaged in a package named myhello. 
-	This package will be used later from BitBake when eventually building a rootfs image containing the helloworld recipe package
-
-	packages: The extracted contents of packages are stored here
-	packages-split: The contents of packages, extracted and split, are stored here. This has a sub-directory for each package
-	
-
-
-Who defines the fetch, configure and other tasks 
--------------------------------------------------
-
-When bitbake is run to build a recipe, base.bbclass file gets inherited automatically by any recipe
-
-You can find it in classes/base.bbclass
-
-This class contains definitions for standard basic tasks such as fetching, unpacking, configuring (empty by default), compiling (runs any Makefile present), installing (empty by default) and packaging (empty by default)
-
-These classes are often overridden or extended by other classes such as the autotools class or the package class.	
-	 
