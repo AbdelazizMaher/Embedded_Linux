@@ -91,7 +91,9 @@ Example of classes
 -------------------
 
 `cmake.bbclass` - Handles cmake in recipes
+
 `kernel.bbclass` - Handles building kernels. Contains code to build all kernel trees
+
 `module.bbclass` - Provides support for building out-of-tree Linux Kernel Modules
 
 
