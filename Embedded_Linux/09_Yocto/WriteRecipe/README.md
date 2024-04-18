@@ -17,20 +17,20 @@ int main()
 }	
 ```
 
-### Step 2: Create a folder in the layer recipes-example 'hello'
+### Step 2: Create a folder in the layer recipes-example `hello`
 
 ```bash
 mkdir -p recipes-examples/hello
 ```
 
-### Step 3: Create 'files' folder inside the 'hello' folder and copy hello.c inside this folder
+### Step 3: Create `files` folder inside the `hello` folder and copy hello.c inside this folder
 
 ```bash
 # Copy the hello.c into the below location
 mkdir -p recipes-examples/hello/files
 ```
 
-### Step 4: Create a file called 'hello_0.1.bb' with the following content:
+### Step 4: Create a file called `hello_0.1.bb` with the following content:
 
 ```bash
 SUMMARY = "Simple print hello recipe"
