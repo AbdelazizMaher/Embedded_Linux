@@ -1,0 +1,1 @@
+cmd_/home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/LED.mod := { echo  /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/LED.o;  echo; } > /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/LED.mod

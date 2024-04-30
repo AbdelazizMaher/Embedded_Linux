@@ -1,0 +1,1 @@
+cmd_/home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/004-pseudo_charDriverPermissions/modules.order := {   echo /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/004-pseudo_charDriverPermissions/pseudoDriver_Permissions.ko; :; } | awk '!x[$$0]++' - > /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/004-pseudo_charDriverPermissions/modules.order

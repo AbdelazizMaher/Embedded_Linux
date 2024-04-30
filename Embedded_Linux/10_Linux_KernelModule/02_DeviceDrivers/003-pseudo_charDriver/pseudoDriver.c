@@ -7,6 +7,9 @@
 
 #define DEV_MEM_SIZE  512
 
+/* Global write function's file position  */
+loff_t f_pos_g;
+
 /* pseudo device memory */
 char device_buffer[DEV_MEM_SIZE];
 
@@ -61,9 +64,9 @@ ssize_t pcd_read(struct file *filp, char __user *buff, size_t count, loff_t *f_p
 }
 
 ssize_t pcd_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
-{
-    memset(device_buffer,0,DEV_MEM_SIZE);
+{   
     /* 1. Adjust the count */
+    //*f_pos = f_pos_g;
     if( (count + *f_pos) > DEV_MEM_SIZE)
         count = DEV_MEM_SIZE - *f_pos;
 
@@ -71,12 +74,19 @@ ssize_t pcd_write(struct file *filp, const char __user *buff, size_t count, loff
     if( !count )
         return -ENOMEM;    
 
-    /* 3. Copy data from user ( returns --> (0 on success) */
+    /* 3. If appending, move the file pointer to the end else reset the device for new write */
+    if (filp->f_flags & O_APPEND)
+        *f_pos = f_pos_g;
+    else
+        memset(device_buffer,0,DEV_MEM_SIZE);    
+
+    /* 4. Copy data from user ( returns --> (0 on success) */
     if( copy_from_user(&device_buffer[*f_pos],buff,count) )
         return -EFAULT;
 
-    /* 4. Update the current file position */
+    /* 5. Update the current file position */  
     *f_pos += count;
+    f_pos_g = *f_pos;
 
     /* 5. return number of bytes wriiten */
     return count;  

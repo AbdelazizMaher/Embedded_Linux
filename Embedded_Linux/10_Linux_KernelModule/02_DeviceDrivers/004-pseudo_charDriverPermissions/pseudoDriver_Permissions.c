@@ -32,8 +32,13 @@ static char *pcd_devnode(struct device *dev, umode_t *mode)
 
         return NULL;
 }
-static int pcd_open(struct inode *inode, struct file *file)
-{   
+static int pcd_open(struct inode *inode, struct file *filp)
+{
+    // Check if the process is opening the device for writing
+    if ((filp->f_flags & O_ACCMODE) == O_WRONLY || (filp->f_flags & O_ACCMODE) == O_RDWR) {
+        return -1;
+        
+    }
     return 0;   
 }
 
@@ -62,7 +67,11 @@ ssize_t pcd_read(struct file *filp, char __user *buff, size_t count, loff_t *f_p
 
 ssize_t pcd_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
 {
-    memset(device_buffer,0,DEV_MEM_SIZE);
+    
+    // Check if the process is opening the device for writing
+    if ((filp->f_flags & O_ACCMODE) == O_WRONLY || (filp->f_flags & O_ACCMODE) == O_RDWR) {
+        return -1;        
+    }    
     /* 1. Adjust the count */
     if( (count + *f_pos) > DEV_MEM_SIZE)
         count = DEV_MEM_SIZE - *f_pos;

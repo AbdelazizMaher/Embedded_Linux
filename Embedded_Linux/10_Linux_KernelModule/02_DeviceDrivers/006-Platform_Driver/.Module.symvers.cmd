@@ -1,0 +1,1 @@
+cmd_/home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/Module.symvers := sed 's/\.ko$$/\.o/' /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/modules.order | scripts/mod/modpost -m -a  -o /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/006-Platform_Driver/Module.symvers -e -i Module.symvers   -T -

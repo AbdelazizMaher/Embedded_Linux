@@ -1,4 +1,6 @@
-obj-m = pseudoDriver_Permissions.o
+obj-m = platformDriver.o  LED.o
+
+TARGET_BDIR =
 
 HOST_BDIR = /lib/modules/$(shell uname -r)/build
 
