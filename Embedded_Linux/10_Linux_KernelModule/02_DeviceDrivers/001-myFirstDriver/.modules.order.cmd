@@ -1,1 +1,0 @@
-cmd_/home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/001-myFirstDriver/modules.order := {   echo /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/001-myFirstDriver/myDriver.ko; :; } | awk '!x[$$0]++' - > /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/001-myFirstDriver/modules.order
