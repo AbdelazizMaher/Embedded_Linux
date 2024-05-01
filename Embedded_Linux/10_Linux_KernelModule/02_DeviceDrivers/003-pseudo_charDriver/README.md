@@ -2,6 +2,12 @@
 
 This is a simple Linux kernel module that implements a `pseudo character driver`. It creates a character device `/dev/pcd` that supports reading and writing operations.
 
+## Overwrite 
+![](overwrite.png)
+
+## Append 
+![](append.png)
+
 ## Description
 
 The driver maintains a pseudo device buffer `device_buffer` of size `DEV_MEM_SIZE` bytes. Users can read from and write to this buffer through the character device.
