@@ -79,20 +79,26 @@ The driver is implemented using the following components:
 
 ## Usage
 
-1. **Module Loading**:
+1. **Generating module**:
+
+```bash
+make
+```
+
+2. **Module Loading**:
 
 ```bash
 sudo insmod procDriver.ko
 ```
 
-2. **Read from mydrive**:
+3. **Read from mydrive**:
 
 ```bash
 # Output: Hello
 cat /proc/1999_proc/mydrive
 ```
 
-3. **Module Unloading**:
+4. **Module Unloading**:
 
 ```bash
 sudo rmmod procDriver
