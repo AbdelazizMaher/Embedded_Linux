@@ -1,1 +1,0 @@
-cmd_/home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/003-pseudo_charDriver/modules.order := {   echo /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/003-pseudo_charDriver/pseudoDriver.ko; :; } | awk '!x[$$0]++' - > /home/abdelaziz/NTI_WS/Linux_Workspace/DeviceDrivers/LKM/003-pseudo_charDriver/modules.order

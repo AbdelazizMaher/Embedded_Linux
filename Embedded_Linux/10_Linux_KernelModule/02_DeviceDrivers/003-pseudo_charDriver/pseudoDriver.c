@@ -22,10 +22,10 @@ struct cdev pcd_cdev;
 /* pointer to class (higher-level view of a device that abstracts out low-level implementation details) structure */
 struct class *pcd_class;
 
-
 /* pointer to device (contains the informations that the device model core needs to model the system) structure */
 struct device *pcd_device;
 
+/* Function to set device node permissions */
 static char *pcd_devnode(struct device *dev, umode_t *mode)
 {
         if (!mode)
@@ -66,7 +66,6 @@ ssize_t pcd_read(struct file *filp, char __user *buff, size_t count, loff_t *f_p
 ssize_t pcd_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
 {   
     /* 1. Adjust the count */
-    //*f_pos = f_pos_g;
     if( (count + *f_pos) > DEV_MEM_SIZE)
         count = DEV_MEM_SIZE - *f_pos;
 
@@ -105,35 +104,78 @@ struct file_operations pcd_fops =
 
 static int __init pcdDriver_INIT(void)
 {
+    int ret;
+
     /* 1. Dynamically allocate device number region */
-    alloc_chrdev_region(&device_number,0,1,"pcd_regions");
+    ret = alloc_chrdev_region(&device_number,0,1,"pcd_regions");
+	if(ret < 0)
+    {
+		pr_err("Alloc chrdev numbers failed\n");
+		goto alloc_fail;
+	}
 
     /* 2. Initialize cdev structure with its file operations */
     cdev_init(&pcd_cdev,&pcd_fops);
 
     /* 3. Register cdev structure with VFS */
     pcd_cdev.owner = THIS_MODULE;
-    cdev_add(&pcd_cdev,device_number,1);    
+    ret = cdev_add(&pcd_cdev,device_number,1);  
+	if(ret < 0)
+    {
+		pr_err("Cdev addition failed\n");
+		goto cdev_fail;
+	}      
 
     /* 4. Create device class under sys/class/<class name> */
     pcd_class = class_create(THIS_MODULE,"pcd_class");
-    pcd_class->devnode = pcd_devnode;
+	if(IS_ERR(pcd_class)) /*ERR_PTR() on error*/
+    {
+		pr_err("Class creation failed\n");
+        /* Convert pointer to error code(int)*/
+		ret = PTR_ERR(pcd_class);
+		goto class_fail;
+	} 
 
+    /* Set device node permissions */
+    pcd_class->devnode = pcd_devnode;
+   
     /* 5. Create device under sys/class/<class name>/<device name> and populate it with device info */
     pcd_device = device_create(pcd_class,NULL,device_number,NULL,"pcd");
+	if(IS_ERR(pcd_device)) /*ERR_PTR() on error*/
+    {
+		pr_err("Device creation failed\n");
+        /* Convert pointer to error code(int)*/
+		ret = PTR_ERR(pcd_device);
+		goto device_fail;
+	}
 
     return 0;
+
+device_fail:
+	class_destroy(pcd_class);
+class_fail:
+	cdev_del(&pcd_cdev);	
+cdev_fail:
+	unregister_chrdev_region(device_number,1);
+alloc_fail:
+	printk("Module insertion failed\n");
+
+	return ret;
 }
 
 static void __exit pcdDriver_EXIT(void)
 {
+    /* 1. Remove device */
     device_destroy(pcd_class,device_number);
+
+    /* 2. Destroy class */
     class_destroy(pcd_class);
+
+    /* 3. Delete cdev */
     cdev_del(&pcd_cdev);
 
     /* 4. unregister a range of device numbers */
-    unregister_chrdev_region(device_number,1);
-    
+    unregister_chrdev_region(device_number,1);   
 }
 
 MODULE_LICENSE("GPL");
