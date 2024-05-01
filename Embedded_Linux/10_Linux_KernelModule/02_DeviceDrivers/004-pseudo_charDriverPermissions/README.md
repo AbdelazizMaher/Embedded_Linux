@@ -29,5 +29,7 @@ static int pcd_open(struct inode *inode, struct file *filp)
 ### Explanation
 
 `**filp->f_flags`**: This field contains the flags associated with the file object.
+
 `**O_ACCMODE`**: This is a mask that represents the access mode of the file.
+
 `**O_WRONLY, O_RDWR`**: These are constants representing write-only and read-write access modes respectively.
