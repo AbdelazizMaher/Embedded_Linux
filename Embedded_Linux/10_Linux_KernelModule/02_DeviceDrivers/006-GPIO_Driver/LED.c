@@ -7,15 +7,11 @@ void LEDdev_release(struct device *dev)
 	pr_info("Device released \n");
 }
 
-
-
 struct platform_device_private_data  LED_prv_data[] = {
-	[0] = {.Direction = "OUTPUT", .perm = WRONLY, .OutMode = "GPIO_PIN_MODE_OUTPUT_PP", .Value = 0},
-	[1] = {.Direction = "OUTPUT", .perm = WRONLY, .OutMode = "GPIO_PIN_MODE_OUTPUT_PP", .Value = 0},
-	[2] = {.Direction = "OUTPUT", .perm = WRONLY, .OutMode = "GPIO_PIN_MODE_OUTPUT_PP", .Value = 0},
+	[0] = {.Direction = OUTPUT, .perm = WRONLY, .OutMode = GPIO_PIN_MODE_OUTPUT_PP, .Value = 0, .PinNumber = GPIO_22},
+	[1] = {.Direction = OUTPUT, .perm = WRONLY, .OutMode = GPIO_PIN_MODE_OUTPUT_PP, .Value = 0, .PinNumber = GPIO_23},
+	[2] = {.Direction = OUTPUT, .perm = WRONLY, .OutMode = GPIO_PIN_MODE_OUTPUT_PP, .Value = 0, .PinNumber = GPIO_25},
 };
-
-
 
 struct platform_device platform_LEDdev_1 = {
 	.name = "GREEN_LED",
@@ -85,10 +81,10 @@ static void __exit LED_exit(void)
 	pr_info("Device setup module unloaded \n");
 }
 
-module_init(LED_init);
-module_exit(LED_exit);
-
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Abdelaziz Maher");
 MODULE_DESCRIPTION("A led driver");
+
+module_init(LED_init);
+module_exit(LED_exit);

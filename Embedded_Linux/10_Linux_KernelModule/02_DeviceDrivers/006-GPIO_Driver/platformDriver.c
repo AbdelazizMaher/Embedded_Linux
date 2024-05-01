@@ -42,7 +42,25 @@ int check_permission(int dev_perm, int acc_mode)
 
 static int GPIO_open(struct inode *inode, struct file *filp)
 {
-	return 0;
+	int ret;
+
+	int minor_n;
+	
+	struct platform_device_private_data *plat_data;
+
+	/* 1. find out on which device file open was attempted by the user space */
+	minor_n = MINOR(inode->i_rdev);
+
+	/* 2. Get device's private data structure */
+	plat_data = container_of(inode->i_cdev,struct platform_device_private_data,cdev);
+
+	/* 3. To supply device private data to other methods of the driver */
+	filp->private_data = plat_data;
+		
+	/* 4. check permission */
+	ret = check_permission(plat_data->perm,filp->f_mode);
+		
+	return ret;
 }
 
 ssize_t GPIO_read(struct file *filp, char __user *buff, size_t count, loff_t *f_pos)
@@ -51,7 +69,9 @@ ssize_t GPIO_read(struct file *filp, char __user *buff, size_t count, loff_t *f_
 }
 
 ssize_t GPIO_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
-{   
+{  
+	struct platform_device_private_data *plat_data = (struct platform_device_private_data*)filp->private_data;
+
     uint8_t rec_buf[10] = {0};
 
     if( copy_from_user( rec_buf, buff, count ) > 0)
@@ -59,24 +79,23 @@ ssize_t GPIO_write(struct file *filp, const char __user *buff, size_t count, lof
         return -EFAULT;
     }
 
-    if (rec_buf[0]=='1')
-    {
-        //set the GPIO value to HIGH
-        //gpio_set_value(GPIO_23, 1);
-    }
-    else if (rec_buf[0]=='0')
-    {
-        //set the GPIO value to LOW
-        //gpio_set_value(GPIO_23, 0);
-    } 
-    else
-    {
-
-    }
+	if (rec_buf[0]=='1') 
+	{
+		/* set the GPIO value to HIGH */
+		gpio_set_value(plat_data->PinNumber, 1);
+	}
+	else if (rec_buf[0]=='0')
+	{
+		/*set the GPIO value to LOW */
+		gpio_set_value(plat_data->PinNumber, 0);
+	}
+	else 
+	{
+		pr_err("Unknown command : Please provide either 1 or 0 \n");
+	}
 
     return count; 
 }
-
 
 struct file_operations GPIO_fops = 
 {
@@ -97,8 +116,6 @@ int GPIO_remove(struct platform_device *pdev)
 		return -EINVAL;
 	}
 	
-	
-
 	/*1. Remove a device that was created with device_create() */
 	device_destroy(GPIO_prvdata.GPIO_class,GPIO_prvdata.device_number +  pdev->id);
 	
@@ -110,84 +127,6 @@ int GPIO_remove(struct platform_device *pdev)
 	return 0;
 }
 
-
-ssize_t show_direction(struct device *dev, struct device_attribute *attr,char *buf)
-{
-	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata) {
-        pr_err("Platform data is NULL\n");
-        return -EINVAL;
-    }
-
-    if (!pdata->Direction) {
-        pr_err("Direction string is NULL\n");
-        return -EINVAL;
-    }
-
-    return sprintf(buf, "%s\n", pdata->Direction);
-}
-
-ssize_t show_outmode(struct device *dev, struct device_attribute *attr,char *buf)
-{
-	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata) {
-        pr_err("Platform data is NULL\n");
-        return -EINVAL;
-    }
-
-	if (!pdata->OutMode) {
-	pr_err("Direction string is NULL\n");
-	return -EINVAL;
-    }
-
-	return sprintf(buf,"%s\n",pdata->OutMode);
-}
-
-ssize_t store_outmode(struct device *dev, struct device_attribute *attr,const char *buf, size_t count)
-{
-	return 0;
-}
-
-ssize_t show_value(struct device *dev, struct device_attribute *attr,char *buf)
-{
-	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata) {
-        pr_err("Platform data is NULL\n");
-        return -EINVAL;
-    }
-
-	return sprintf(buf,"%d\n",pdata->Value);
-}
-
-ssize_t store_value(struct device *dev, struct device_attribute *attr,const char *buf, size_t count)
-{
-	return 0;
-}
-
-static DEVICE_ATTR(Direction,S_IRUGO,show_direction,NULL);
-static DEVICE_ATTR(OutMode,S_IRUGO|S_IWUSR,show_outmode,store_outmode);
-static DEVICE_ATTR(Value,S_IRUGO|S_IWUSR,show_value,store_value);
-
-
-
-int GPIO_sysfs_create_files(struct device *GPIO_device)
-{
-	int ret;
-
-	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_Direction.attr);
-	if(ret)
-		return ret;
-
-	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_OutMode.attr);
-	if(ret)
-		return ret;	
-
-	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_Value.attr);
-	if(ret)
-		return ret;
-
-	return ret;
-}
 
 int GPIO_probe(struct platform_device *pdev)
 { 
@@ -203,7 +142,6 @@ int GPIO_probe(struct platform_device *pdev)
 		dev_info(&pdev->dev,"No platform data available\n");
 		return -EINVAL;
 	}
-
 
 	dev_set_drvdata(&pdev->dev,pdata);
 
@@ -226,54 +164,65 @@ int GPIO_probe(struct platform_device *pdev)
 		return ret;
 		
 	}
-	
 
-	ret = GPIO_sysfs_create_files(GPIO_prvdata.GPIO_device);
-	if(ret)
-	{
-		device_destroy(GPIO_prvdata.GPIO_class,GPIO_prvdata.device_number +  pdev->id);
-		return ret;
-	}
-	
-	pr_info("Probe was successful\n");			       
-
-/*	switch(pdata->id)
+	switch(pdev->id)
 	{
 	case GREEN_LED:
     {
-		//Checking the GPIO is valid or not
+		/* Checking the GPIO is valid or not*/
 		if(gpio_is_valid(GPIO_22) == false)
 		{
 			gpio_free(GPIO_22);
 		}
 	
-		//Requesting the GPIO
+		/*Requesting the GPIO*/
 		if(gpio_request(GPIO_22,"GPIO_22") < 0)
 		{
 			gpio_free(GPIO_22);
 		} 
-		//configure the GPIO as output
+		/*configure the GPIO as output*/
     	gpio_direction_output(GPIO_22, 0);
-
+		
 		break;
 	}
 	case BLUE_LED:
     {
-		//Checking the GPIO is valid or not
+		/* Checking the GPIO is valid or not*/
 		if(gpio_is_valid(GPIO_23) == false)
 		{
 			gpio_free(GPIO_23);
 		}
 	
-		//Requesting the GPIO
-		if(gpio_request(GPIO_23,"GPIO_22") < 0)
+		/*Requesting the GPIO*/
+		if(gpio_request(GPIO_23,"GPIO_23") < 0)
 		{
 			gpio_free(GPIO_23);
 		} 
-		//configure the GPIO as output
+		/*configure the GPIO as output*/
     	gpio_direction_output(GPIO_23, 0);
 		break;
-	}*/
+	}	
+	case RED_LED:
+    {
+		/* Checking the GPIO is valid or not*/
+		if(gpio_is_valid(GPIO_25) == false)
+		{
+			gpio_free(GPIO_25);
+		}
+	
+		/*Requesting the GPIO*/
+		if(gpio_request(GPIO_25,"GPIO_25") < 0)
+		{
+			gpio_free(GPIO_25);
+		} 
+		/*configure the GPIO as output*/
+    	gpio_direction_output(GPIO_25, 0);
+		break;		
+	}
+	} 
+
+	pr_info("Probe was successful\n");			       
+
     return 0;
 }
 

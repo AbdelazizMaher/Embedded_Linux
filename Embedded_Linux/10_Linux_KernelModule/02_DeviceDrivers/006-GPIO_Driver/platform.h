@@ -11,8 +11,6 @@
 #include <linux/sysfs.h>
 #include <linux/gpio.h>
 
-#undef pr_fmt
-#define pr_fmt(fmt) "%s : " fmt,__func__
 
 /*permission codes */
 #define RDONLY          0x01
@@ -28,20 +26,21 @@ enum platform_dev_names
 
 enum GPIO_Direction
 {
-	OUTPUT = 0,
-	INPUT,
+	INPUT = 0,
+	OUTPUT,
 };
 
 enum GPIO_OutMode
 {
-	GPIO_PIN_MODE_OUTPUT_PP = 0,
-	GPIO_PIN_MODE_OUTPUT_OD,
+	GPIO_PIN_MODE_OUTPUT_OD = 0,
+	GPIO_PIN_MODE_OUTPUT_PP,
 };
 
 struct platform_device_private_data
 {
-	char* Direction;
-    char* OutMode;
+	int PinNumber;
+	int Direction;
+    int OutMode;
 	int Value;
 	int perm;
 	struct cdev cdev;
@@ -56,9 +55,5 @@ struct platform_driver_private_data
 	struct device *GPIO_device;
 };
 
-struct GPIO_attr
-{
-
-};
 
 #endif
