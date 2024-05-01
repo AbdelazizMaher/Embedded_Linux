@@ -3,6 +3,9 @@
 This is a simple Linux kernel module that creates a procfs (proc filesystem) entry named `mydrive`. The procfs entry allows reading from the kernel module.
 
 
+## PROC Entry 
+![](output.png)
+
 ## Overview
 The `operating system` segregates virtual memory into `kernel` space and `userspace`.`Kernel space` is strictly reserved for running the `kernel`, `kernel extensions`, and most `device drivers`.In contrast, `user space` is the memory area where all `user-mode applications work`, and this memory can be swapped out when necessary. 
 > :exclamation: There are many ways to Communicate between the Userspace and Kernel Space, one of them is `Procfs`.
