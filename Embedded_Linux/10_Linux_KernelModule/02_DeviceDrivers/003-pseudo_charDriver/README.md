@@ -8,16 +8,16 @@ The driver maintains a pseudo device buffer `device_buffer` of size `DEV_MEM_SIZ
 
 ### File Operations
 
-- **Open**: Opens the device file.
-- **Release**: Closes the device file.
-- **Read**: Reads data from the device buffer.
-- **Write**: Writes data to the device buffer.
+- **`Open`**: Opens the device file.
+- **`Release`**: Closes the device file.
+> :exclamation: if you don't provide an open/release function, the kernel will use a default implementation that simply allows the device to be opened/closed without any special actions. It returns success (0) immediately.
+- **`Read`**: Reads data from the device buffer.
+- **`Write`**: Writes data to the device buffer.
 
 ## Implementation
 
 ### Global Variables
 
-- `f_pos_g`: Global file position used by the write function.
 - `device_buffer`: Pseudo device memory.
 - `device_number`: Device number.
 - `pcd_cdev`: Character device structure.
@@ -69,30 +69,37 @@ The `pcdDriver_EXIT` function is called when the module is unloaded. It performs
 
 ## Usage
 
-1. **Module Loading**:
-   ```bash
-   sudo insmod pcdDriver.ko
+1. **Generating module**:
 
-    Module Unloading:
+```bash
+make
+```
 
-    bash
+2. **Module Loading**:
 
-sudo rmmod pcdDriver
+```bash
+sudo insmod pcdDriver.ko
+```
 
-Create Device Node:
+3. **Read from Device**:
 
-bash
-
-sudo mknod /dev/pcd c <major_number> 0
-
-Read from Device:
-
-bash
-
+```bash
 cat /dev/pcd
+```
 
-Write to Device:
+3. **Write to Device**:
 
-bash
-
+```bash
+# to overwrite
 echo "Data" > /dev/pcd
+# to append
+echo "Data" >> /dev/pcd
+```
+
+4. **Module Unloading**:
+
+```bash
+sudo rmmod pcdDriver
+```
+
+
