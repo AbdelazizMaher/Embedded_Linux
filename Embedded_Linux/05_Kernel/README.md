@@ -2,9 +2,9 @@
 
 **The Linux kernel** is the core component of the Linux operating system. It serves as the bridge between the hardware and the software, providing essential functionalities such as process management, memory management, device drivers, and system calls.
 
-# Linux Kernel for QEMU vexpress
+# Building Linux Kernel 
 
-- you can clone the **main repo** or use a **repository specifically configured for running QEMU vexpress virtual machines** 
+- you can clone the **main repo** or use a **repository specifically configured for the Target** 
 
 ## Clone the Main Repository
 
@@ -14,7 +14,7 @@
 # you can either choose the linux kernel version and download it or clone the last commit
 git clone --depth=1 https://github.com/torvalds/linux.git
 ```
-### 2. Use a Repository for QEMU vexpress
+### 2.1 Use a Repository for QEMU vexpress
 
 **Alternatively,** you can use a repository specifically configured for running QEMU vexpress virtual machines. This repository includes additional configuration and patches optimized for the vexpress platform.
 
@@ -22,6 +22,14 @@ git clone --depth=1 https://github.com/torvalds/linux.git
 ```bash
 # you can either choose the linux kernel version and download it or clone the last commit
 git clone --depth=1 https://github.com/qemu/qemu.git
+```
+
+### 2.2 Use a Repository for Raspberry Pi
+
+### To clone the repository for Raspberry Pi, use the following command:
+```bash
+# you can either choose the linux kernel version and download it or clone the last commit
+git clone --depth=1 -b <stable branch> https://github.com/raspberrypi/linux.git
 ```
 
 ## Building the Kernel
@@ -36,7 +44,10 @@ git clone --depth=1 https://github.com/qemu/qemu.git
 # To indentify your kernel version 
 cd linux[version]
 
-# #configure the kernel to vexpress default configuration
+# Removes all the temporary folder, object files, images generated during the previous build.Also deletes the .config file if created previously  
+make ARCH=arm distclean​
+
+# configure the kernel to vexpress default configuration
 make vexpress_defconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf-
 
 #configure the kernel with more configuration if needed 
@@ -45,6 +56,41 @@ make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-
 #build the kernel 
 make zImage modules dtbs ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf- -j$(nproc)
 ```
+
+**Once you have cloned the repository,** you can build the Linux kernel for the Raspberry Pi using the following commands:
+```bash
+# To indentify your kernel version 
+cd linux[version]
+
+# Removes all the temporary folder, object files, images generated during the previous build.Also deletes the .config file if created previously  
+make ARCH=arm distclean​
+
+# default configuration can be found SOC name(bcm2711) or in this path
+ls arch/arm64/configs
+
+# configure the kernel to default configuration
+ make ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu- bcm2711_defconfig
+
+#configure the kernel with more configuration if needed 
+make menuconfig ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu-
+
+#build the kernel, This stage creates a kernel image also all the device tree source files will be compiled, and dtbs will be generated
+ make ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu-  -j$(nproc)
+```
+
+### Compiling modules and store them in a folder on your PC
+
+The compiled modules have a .ko suffix and are generated in the same directory as the source code, meaning that they are scattered all around the kernel source tree.
+
+To install them into the staging area of your root filesystem (we will talk about root filesystems in the next chapter), provide the path using **INSTALL_MOD_PATH**:
+
+```bash
+#This step installs all the generated .ko files in the default path of the computer (/lib/modules/<kernel_ver>)
+make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu- INSTALL_MOD_PATH=<Directory on your PC> modules_install
+```
+
+Kernel modules are put into the directory /lib/modules/[kernel version], relative to the root of the filesystem.
+
 ## Booting Kernel on QEMU VExpress
 
 ### Boot from sd-card
