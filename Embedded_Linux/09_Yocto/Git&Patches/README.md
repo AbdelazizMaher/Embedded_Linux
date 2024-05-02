@@ -3,7 +3,7 @@
 `Git` is a powerful version control system used in Yocto Project for managing source code repositories. It allows `fetching source code` from remote repositories, `managing revisions`, and `applying patches`. Here's a guide on using Git effectively within Yocto:
 
 
-## Write a recipe for git remote repository
+## 1. Write a recipe for git remote repository
 
 
 - `Yocto` supports the ability to pull code from online git repositories as part of the build process.
@@ -58,50 +58,53 @@ SRC_URI = "git://server.name/repository;branch=branchname"
 > :grey_exclamation: If you do not specify a branch, BitBake looks in the default "master" branch.
 >> BitBake will now validate the SRCREV value against the branch.
 
+## 2. Patching the Source for a Recipe
 
+In `Yocto`, everything is built from source, which provides flexibility in making changes to recipes. However, it's crucial to understand the proper way to apply changes to the source code. Let's discuss why directly modifying the source in the `"work directory"` is not recommended and how to `patch the source` effectively.
 
-## Patching the source for a recipe
+### The Work Directory
 
+`Yocto` creates a directory known as the `"work directory"` where all the build processes occur. It's located at `tmp/work/<architecture>/<recipe>/<version>`. Within this directory, the source code resides in a subdirectory named `<recipename>-<version>` or `"git"` depending on the source fetch method.
 
-Advantage of Yocto is that everything is build from source
+### Why Direct Modification is Not Recommended
 
-It's fairly easy to make changes to anything that gets built
+#### 1. Risk of Losing Changes
+Making changes directly in the work directory poses a risk of losing modifications. For example, running `bitbake -c clean` can wipe out the directory, erasing your changes.
 
-As part of building a recipe, OE creates a tmp/work/<architecture>/<recipe>/<version> directory, known as the "work directory". 
-
-This is where all of the work done to build a recipe takes place.
-
-A subdirectory contains the source of the recipe named <recipename>-<version> or "git" (depending on how the fetched source is provided)
-
-The temptation is to simply make changes here and then recompile, but there are several reasons why that's not a good idea:
-
-1.You can easily lose your changes if you're not careful e.g. running bitbake -c clean will wipe the directory out
-
-2. You have to force compilation as the build system doesn't know that you've made any changes
-
+#### 2. Need for Forced Compilation
+The build system doesn't automatically recognize changes made directly in the work directory. You have to force compilation using:
+```bash
 bitbake -c compile <recipe> -f
+```
 
+### Creating and Applying Patches in Yocto
 
-Patches
----------------
+Patches play a crucial role in customizing third-party source code within Yocto. They allow you to make modifications to the codebase while maintaining the original source intact. Here's a guide on creating and applying patches using Git:
 
-Patches can be easily created using Git
+> If you download the third-party source code as a Git repository, this is definitely the easiest solution
 
-If you download the third-party source code as a Git repository, this is definitely the easiest solution
+>> After downloading the repository, make the required changes to the code, and add these changes to the repository as a new commit
 
-After downloading the repository, make the required changes to the code, and add these changes to the repository as a new commit
+>>> You can then tell Git to make a patch file.
 
-You can then tell Git to make a patch file.
+### Creating Patches
 
-If all the changes are contained within a single additional commit, you can use the following command:
+1 .**Make Changes and Commit**:
 
-~$ git show HEAD > my-patch.patch
+Navigate to the cloned repository and make the required changes to the code. Once done, add and commit your changes:
 
-These generated patches should be bundled with your recipe files.
+```bash
+git add .
+git commit -m "Description of changes"
+```
 
-Patches should always be in a sub-directory of where the recipe lives.
+2. **Generate the Patch File**:
 
-Yocto will automatically apply these patches when it needs to build your recipe.
+If all changes are contained within a single additional commit, you can generate a patch file using:
 
+```bash
+git show HEAD > my-patch.patch
+```
+This command creates a patch file named my-patch.patch containing the changes introduced in the latest commit.
 
 
