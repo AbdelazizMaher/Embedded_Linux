@@ -8,14 +8,20 @@
 #include <linux/device.h>
 #include <linux/uaccess.h>
 #include <linux/platform_device.h>
+#include <linux/slab.h>
+#include <linux/kernel.h>
 #include <linux/sysfs.h>
 #include <linux/gpio.h>
 
 
 /*permission codes */
-#define RDONLY          0x01
-#define WRONLY          0X10
-#define RDWR            0x11
+#define RDONLY          	0x01
+#define WRONLY          	0X10
+#define RDWR            	0x11
+
+#define GPIO_22  			22
+#define GPIO_23  			23
+#define GPIO_25	  			25
 
 enum platform_dev_names
 {
@@ -23,6 +29,7 @@ enum platform_dev_names
 	BLUE_LED,
 	RED_LED
 };
+
 
 enum GPIO_Direction
 {

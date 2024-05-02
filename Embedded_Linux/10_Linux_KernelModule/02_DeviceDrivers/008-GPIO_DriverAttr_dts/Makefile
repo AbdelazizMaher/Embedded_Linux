@@ -1,4 +1,4 @@
-obj-m = platformDriver.o  LED.o
+obj-m = GPIODriver.o
 
 CROSS_COMPILE = aarch64-rpi4-linux-gnu-
 

@@ -2,22 +2,15 @@
 
 #define NO_OF_DEVICES   3
 
-struct platform_device_id GPIO_devicesIDs[] =
+
+struct of_device_id GPIO_dt_match[] = 
 {
-    [GREEN_LED] = {
-        .name = "GREEN_LED",
-		.driver_data = GREEN_LED,
-    },
-    [BLUE_LED] = {
-        .name = "BLUE_LED",
-		.driver_data = BLUE_LED, 
-    },
-    [RED_LED] = {
-        .name = "RED_LED",
-		.driver_data = RED_LED, 
-    },
-    { }
+	{.compatible = "GREEN_LED",.data = (void*)GREEN_LED},
+	{.compatible = "BLUE_LED", .data = (void*)BLUE_LED},
+	{.compatible = "RED_LED",  .data = (void*)RED_LED},
+	{ } 
 };
+
 
 struct platform_driver_private_data GPIO_prvdata;
 
@@ -27,11 +20,11 @@ int check_permission(int dev_perm, int acc_mode)
 	if(dev_perm == RDWR)
 		return 0;
 	
-	//ensures readonly access
+	/* Ensures readonly access */
 	if( (dev_perm == RDONLY) && ( (acc_mode & FMODE_READ) && !(acc_mode & FMODE_WRITE) ) )
 		return 0;
 	
-	//ensures writeonly access
+	/* Ensures writeonly access */
 	if( (dev_perm == WRONLY) && ( (acc_mode & FMODE_WRITE) && !(acc_mode & FMODE_READ) ) )
 		return 0;
 
@@ -97,8 +90,7 @@ int GPIO_remove(struct platform_device *pdev)
 ssize_t show_direction(struct device *dev, struct device_attribute *attr,char *buf)
 {
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata)
-	{
+    if (!pdata) {
         pr_err("Platform data is NULL\n");
         return -EINVAL;
     }
@@ -109,8 +101,7 @@ ssize_t show_direction(struct device *dev, struct device_attribute *attr,char *b
 ssize_t show_outmode(struct device *dev, struct device_attribute *attr,char *buf)
 {
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata)
-	{
+    if (!pdata) {
         pr_err("Platform data is NULL\n");
         return -EINVAL;
     }
@@ -126,8 +117,7 @@ ssize_t store_outmode(struct device *dev, struct device_attribute *attr,const ch
 ssize_t show_value(struct device *dev, struct device_attribute *attr,char *buf)
 {
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata)
-	{
+    if (!pdata) {
         pr_err("Platform data is NULL\n");
         return -EINVAL;
     }
@@ -142,8 +132,7 @@ ssize_t store_value(struct device *dev, struct device_attribute *attr,const char
 	int ret;
 
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
-    if (!pdata) 
-	{
+    if (!pdata) {
         pr_err("Platform data is NULL\n");
         return -EINVAL;
     }
@@ -166,19 +155,72 @@ int GPIO_sysfs_create_files(struct device *GPIO_device)
 {
 	int ret;
 
+	/* Create sysfs file for 'Direction' attribute */
 	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_Direction.attr);
 	if(ret)
 		return ret;
 
+	/* Create sysfs file for 'OutMode' attribute */
 	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_OutMode.attr);
 	if(ret)
 		return ret;	
 
+	/* Create sysfs file for 'Value' attribute */
 	ret = sysfs_create_file(&GPIO_device->kobj,&dev_attr_Value.attr);
 	if(ret)
 		return ret;
 
 	return ret;
+}
+
+
+struct platform_device_private_data* gpio_get_platdata_from_dt(struct device *dev)
+{
+	struct device_node *dev_node = dev->of_node;
+	struct platform_device_private_data *pdata;
+
+	/* Check if device node exists */
+	if(!dev_node)
+		return NULL;
+
+	/* Allocate memory for platform device private data */
+	pdata = devm_kzalloc(dev,sizeof(*pdata),GFP_KERNEL);
+	if(!pdata)
+	{
+		dev_info(dev,"Cannot allocate memory \n");
+		return ERR_PTR(-ENOMEM);
+	}
+
+	/* Read 'Direction' property */
+	if(of_property_read_u32(dev_node,"abdelaziz,Direction",&pdata->Direction) )
+	{
+		dev_info(dev,"Missing Direction property\n");
+		return ERR_PTR(-EINVAL);
+
+	}
+
+	/* Read 'OutMode' property */
+	if(of_property_read_u32(dev_node,"abdelaziz,OutMode",&pdata->OutMode) )
+	{
+		dev_info(dev,"Missing OutMode property\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	/* Read 'Value' property */	
+	if(of_property_read_u32(dev_node,"abdelaziz,Value",&pdata->Value) )
+	{
+		dev_info(dev,"Missing Value property\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	/* Read 'perm' property */
+	if(of_property_read_u32(dev_node,"abdelaziz,perm",&pdata->perm) )
+	{
+		dev_info(dev,"Missing permission property\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	return pdata;
 }
 
 int GPIO_probe(struct platform_device *pdev)
@@ -187,20 +229,32 @@ int GPIO_probe(struct platform_device *pdev)
 
 	struct platform_device_private_data *pdata;
 
-	pr_info("A device is detected\n");
+	const struct of_device_id *match;
 
-	pdata = (struct platform_device_private_data*)dev_get_platdata(&pdev->dev);	
-	if(!pdata)
+	pr_info("A device is detected\n");	
+
+	dev_info(&pdev->dev,"A device is detected\n");
+
+	/* Check if there's a matching device in the device tree */
+	match = of_match_device(of_match_ptr(GPIO_dt_match),&pdev->dev);
+	if (!match)
 	{
-		dev_info(&pdev->dev,"No platform data available\n");
-		return -EINVAL;
+		pr_err("No matching device found in the device tree\n");
+		return -ENODEV;
 	}
 
+	/* Get platform data from device tree */
+	pdata = gpio_get_platdata_from_dt(&pdev->dev);
+	if(IS_ERR(pdata))
+		return PTR_ERR(pdata);
 
+	/* Set device private data */
 	dev_set_drvdata(&pdev->dev,pdata);
 
+	/* Initialize character device */
     cdev_init(&pdata->cdev,&GPIO_fops);
 
+	/* Set owner of the character device and Add character device*/
     pdata->cdev.owner = THIS_MODULE;
     ret = cdev_add(&pdata->cdev,GPIO_prvdata.device_number + pdev->id,1);
 	if(ret < 0)
@@ -209,6 +263,7 @@ int GPIO_probe(struct platform_device *pdev)
 		return ret;
 	}  
 
+	/* Create device */
     GPIO_prvdata.GPIO_device = device_create(GPIO_prvdata.GPIO_class,&pdev->dev,GPIO_prvdata.device_number +  pdev->id,NULL,"LED-%d",pdev->id); 
 	if(IS_ERR(GPIO_prvdata.GPIO_device))
 	{
@@ -218,13 +273,16 @@ int GPIO_probe(struct platform_device *pdev)
 		return ret;
 		
 	}
-	
+
+	/* Create sysfs files */	
 	ret = GPIO_sysfs_create_files(GPIO_prvdata.GPIO_device);
 	if(ret)
 	{
 		device_destroy(GPIO_prvdata.GPIO_class,GPIO_prvdata.device_number +  pdev->id);
 		return ret;
-	}			       
+	}
+	
+	pr_info("Probe was successful\n");			       
 
 	switch(pdev->id)
 	{
@@ -289,8 +347,6 @@ int GPIO_probe(struct platform_device *pdev)
 		break;		
 	}	
 	}
-	pr_info("Probe was successful\n");	
-
     return 0;
 }
 
@@ -298,9 +354,9 @@ struct platform_driver GPIO_driver =
 {
 	.probe = GPIO_probe,
 	.remove = GPIO_remove,
-	.id_table = GPIO_devicesIDs,
 	.driver = {
-		.name = "GPIO_driver"
+		.name = "GPIO_driver",
+		.of_match_table = of_match_ptr(GPIO_dt_match)
 	},    
 };
 

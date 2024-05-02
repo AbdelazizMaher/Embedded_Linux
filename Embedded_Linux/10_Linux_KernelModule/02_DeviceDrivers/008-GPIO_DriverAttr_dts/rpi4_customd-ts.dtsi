@@ -1,0 +1,27 @@
+
+/ {
+	GREEN-LED: gpio-22 {
+		compatible = "GREEN_LED";
+		abdelaziz,Direction = <1>;
+		abdelaziz,OutMode = <1>;
+		abdelaziz,Value = <0>;
+		abdelaziz,perm = <0x10>;
+	};
+	
+	BLUE-LED: gpio-23 {
+		compatible = "BLUE-LED";
+		abdelaziz,Direction = <1>;
+		abdelaziz,OutMode = <1>;
+		abdelaziz,Value = <0>;
+		abdelaziz,perm = <0x10>;
+	};
+
+	RED-LED: gpio-25 {
+		compatible = "RED-LED";
+		abdelaziz,Direction = <1>;
+		abdelaziz,OutMode = <1>;
+		abdelaziz,Value = <0>;
+		abdelaziz,perm = <0x10>;
+	};
+
+};
