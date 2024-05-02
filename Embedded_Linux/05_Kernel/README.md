@@ -39,7 +39,10 @@ git clone --depth=1 -b <stable branch> https://github.com/raspberrypi/linux.git
 - [x] Change kernel compression to XZ
 - [x] Change your kernel local version to your name and append on it -v1.0
 
-**Once you have cloned the repository,** you can build the Linux kernel for the QEMU vexpress platform using the following commands:
+**Once you have cloned the repository,** 
+
+1. you can build the Linux kernel for the **QEMU vexpress platform** using the following commands:
+
 ```bash
 # To indentify your kernel version 
 cd linux[version]
@@ -57,7 +60,9 @@ make menuconfig ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-
 make zImage modules dtbs ARCH=arm CROSS_COMPILE=<Path To the Compiler>/arm-cortexa9_neon-linux-musleabihf- -j$(nproc)
 ```
 
-**Once you have cloned the repository,** you can build the Linux kernel for the Raspberry Pi using the following commands:
+
+2. you can build the Linux kernel for the **Raspberry Pi4** using the following commands:
+
 ```bash
 # To indentify your kernel version 
 cd linux[version]
@@ -75,7 +80,7 @@ ls arch/arm64/configs
 make menuconfig ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu-
 
 #build the kernel, This stage creates a kernel image also all the device tree source files will be compiled, and dtbs will be generated
- make ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu-  -j$(nproc)
+make ARCH=arm64 CROSS_COMPILE=aarch64-rpi4-linux-gnu-  -j$(nproc)
 ```
 
 ### Compiling modules and store them in a folder on your PC
