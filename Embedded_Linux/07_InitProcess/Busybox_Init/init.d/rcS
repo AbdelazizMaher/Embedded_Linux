@@ -5,10 +5,9 @@ mount -t proc comment proc/
 
 mount -t sysfs comment sys/
 
-
 ARG=$1
 
-if [ ARG -eq 3 ]
+if [ "$ARG" -eq 3 ]
 then
 
 	for i in /etc/init.d/S??*
@@ -17,8 +16,7 @@ then
 	done
 fi	
 	
-
-if [ ARG -eq 5 ]
+if [ "$ARG" -eq 5 ]
 then
 
 	for i in /etc/init.d/K??*

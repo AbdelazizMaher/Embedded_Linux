@@ -1,6 +1,11 @@
-::sysinit:/etc/init.d/rcS
+# Start services when system starts up
+::sysinit:/etc/init.d/rcS 3
 
+# start shell
 ttyAMA0::askfirst:-/bin/sh
 
 ::restart:/sbin/init
+
+# Excute when the system will go down
+::shutdown:/etc/init.d/rcS 5
 

@@ -66,8 +66,8 @@ ssize_t GPIO_write(struct file *filp, const char __user *buff, size_t count, lof
 struct file_operations GPIO_fops = 
 {
     .owner = THIS_MODULE,
-	.open  = GPIO_open,
-	.read  = GPIO_read,
+    .open  = GPIO_open,
+    .read  = GPIO_read,
     .write = GPIO_write,
 };
 
@@ -97,11 +97,15 @@ int GPIO_remove(struct platform_device *pdev)
 ssize_t show_direction(struct device *dev, struct device_attribute *attr,char *buf)
 {
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
+<<<<<<< HEAD
     if (!pdata)
 	{
+=======
+        if (!pdata) {
+>>>>>>> 1f41b054863ca71b51c813e000e4712909d09fae
         pr_err("Platform data is NULL\n");
         return -EINVAL;
-    }
+        }
 
     return sprintf(buf, "%d\n", pdata->Direction);
 }
@@ -126,11 +130,15 @@ ssize_t store_outmode(struct device *dev, struct device_attribute *attr,const ch
 ssize_t show_value(struct device *dev, struct device_attribute *attr,char *buf)
 {
 	struct platform_device_private_data *pdata = (struct platform_device_private_data*)dev_get_platdata(dev->parent);
+<<<<<<< HEAD
     if (!pdata)
 	{
+=======
+        if (!pdata) {
+>>>>>>> 1f41b054863ca71b51c813e000e4712909d09fae
         pr_err("Platform data is NULL\n");
         return -EINVAL;
-    }
+        }
 
     pdata->Value = gpio_get_value(pdata->PinNumber);
 
@@ -229,7 +237,7 @@ int GPIO_probe(struct platform_device *pdev)
 	switch(pdev->id)
 	{
 	case GREEN_LED:
-    {
+        {
 		/* Checking the GPIO is valid or not*/
 		if(gpio_is_valid(GPIO_22) == false)
 		{
@@ -242,14 +250,14 @@ int GPIO_probe(struct platform_device *pdev)
 			gpio_free(GPIO_22);
 		} 
 		/*configure the GPIO as output*/
-    	gpio_direction_output(GPIO_22, 0);
+    	        gpio_direction_output(GPIO_22, 0);
 
 		pdata->PinNumber = GPIO_22;
 
 		break;
 	}
 	case BLUE_LED:
-    {
+       {
 		/* Checking the GPIO is valid or not*/
 		if(gpio_is_valid(GPIO_23) == false)
 		{
@@ -262,14 +270,14 @@ int GPIO_probe(struct platform_device *pdev)
 			gpio_free(GPIO_23);
 		} 
 		/*configure the GPIO as output*/
-    	gpio_direction_output(GPIO_23, 0);
+    	        gpio_direction_output(GPIO_23, 0);
 
 		pdata->PinNumber = GPIO_23;
 
 		break;
 	}
 	case RED_LED:
-    {
+        {
 		/* Checking the GPIO is valid or not*/
 		if(gpio_is_valid(GPIO_25) == false)
 		{
@@ -282,7 +290,7 @@ int GPIO_probe(struct platform_device *pdev)
 			gpio_free(GPIO_25);
 		} 
 		/*configure the GPIO as output*/
-    	gpio_direction_output(GPIO_25, 0);
+    	        gpio_direction_output(GPIO_25, 0);
 
 		pdata->PinNumber = GPIO_25;
 

@@ -1,0 +1,9 @@
+[Unit]
+Description=Script that runs hellodeamon
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hellodeamon
+
+[Install]
+WantedBy=multi-user.target

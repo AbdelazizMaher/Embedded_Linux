@@ -2,7 +2,7 @@
 
 
 echo "Stopping PrintHello_Daemon"
-pkill -e /bin/PrintHello_Daemon
+pkill -e ./bin/PrintHello_Daemon
 sleep 3	
 
 

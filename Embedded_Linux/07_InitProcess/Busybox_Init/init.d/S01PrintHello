@@ -2,6 +2,6 @@
 
 
 echo "Starting PrintHello_Daemon"
-/bin/PrintHello_Daemon &	
+./bin/PrintHello_Daemon &	
 
 

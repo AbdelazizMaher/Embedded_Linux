@@ -3,7 +3,7 @@
 int main()
 {
 	
-	printf("[Hello]: BusyBox init....\n");
+	printf("\n[Hello]: BusyBox init....\n");
 	printf("[Hello]: BusyBox init....\n");
 	printf("[Hello]: BusyBox init....\n");
 	printf("[Hello]: BusyBox init....\n");
